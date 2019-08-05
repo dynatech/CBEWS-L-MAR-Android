@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import LoginScreen from '../components/layout/LoginScreen';
-import DashboardScreen from '../components/layout/DashboardScreen';
+import Landing from '../navigations/SideMenuNavigation';
 
 const InitialScreens = createStackNavigator({
     Login: {
-        screen: LoginScreen
+        screen: LoginScreen,
+        navigationOptions: {
+            header: null
+        }
     },
     Dashboard: {
-        screen: DashboardScreen
+        screen: Landing,
+        navigationOptions: {
+            header: null
+        }
     }
 });
 

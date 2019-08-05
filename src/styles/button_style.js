@@ -6,7 +6,11 @@ let {height} = Dimensions.get('window');
 
 const ButtonStyle = StyleSheet.create({
    large: {
-
+    backgroundColor: '#083451',
+    borderColor: '#083451',
+    borderRadius: 50,
+    borderWidth: 1,
+    elevation: 20
    },
    medium: {
 
@@ -15,13 +19,17 @@ const ButtonStyle = StyleSheet.create({
        
    },
    large_text: {
-
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 20,
+    padding: 10
    },
    medium_text: {
 
    },
    small_text: {
-       
+
    }
 })
 
