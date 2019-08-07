@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Text, Alert, ToastAndroid, TouchableOpacity, View, Linking } from 'react-native';
 import { Icon, Label } from 'native-base'
 import { ImageStyle } from '../../styles/image_style'
 import { ContainerStyle } from '../../styles/container_style';
@@ -21,6 +21,19 @@ export default class DashboardScreen extends Component {
     )
   };
 
+  initiateCallOrSms() {
+    Alert.alert(
+      'Notice',
+      'Communication Module',
+      [
+        
+        {text: 'Cancel', onPress: ()=> console.log('OK Pressed'),style: 'cancel'},
+        {text: 'Call', onPress: ()=> Linking.openURL('tel:')},
+        {text: 'SMS', onPress: () => Linking.openURL(`sms:?addresses=null&body=`)}
+      ]
+    )
+  }
+  
   render() {
     return (
       <View style={ContainerStyle.content}>
@@ -40,19 +53,19 @@ export default class DashboardScreen extends Component {
           <View style={ContainerStyle.dashboard_menu}>
             <View style={ContainerStyle.menu_row}>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("CommunityRiskAssessment")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Community{"\n"}Risk Assessment</Text>
               </View>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.initiateCallOrSms()}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Call and Text</Text>
               </View>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("AlertGeneration")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Alert{"\n"}Generation</Text>
@@ -60,7 +73,7 @@ export default class DashboardScreen extends Component {
             </View>
             <View style={ContainerStyle.menu_row}>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("DataAnalysis")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Data{"\n"}Analysis</Text>

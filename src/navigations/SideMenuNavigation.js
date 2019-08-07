@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import { createAppContainer, createDrawerNavigator, DrawerItems } from 'react-navigation';
-import DashboardScreen from '../components/layout/DashboardScreen'
+import DashboardNavigation from './DashboardNavigation'
 import SettingsScreen from '../components/layout/SettingsScreen'
 
 const CustomDrawerComponent = (props) => (
@@ -14,7 +14,7 @@ const CustomDrawerComponent = (props) => (
 
 const AppDrawerNavigator = createDrawerNavigator({
   Dashboard: {
-    screen: DashboardScreen,
+    screen: DashboardNavigation,
     navigationOptions: {
       drawerLabel: "Home",
       title: "Main Dashboard"
