@@ -29,12 +29,12 @@ const DataAnalysis = createMaterialTopTabNavigator({
 }, {
     tabBarOptions: {
         labelStyle: {
-            fontSize: height* 0.017,
+            fontSize: height* 0.015,
             alignContent: 'center'
         },
         style: {
             backgroundColor: '#083451',
-            height: height* 0.07,
+            height: height* 0.08,
         },
         indicatorStyle: {
             backgroundColor: '#f27e10'

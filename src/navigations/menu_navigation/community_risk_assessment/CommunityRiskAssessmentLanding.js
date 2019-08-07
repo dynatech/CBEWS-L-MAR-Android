@@ -34,7 +34,7 @@ const CommunityRiskAssessment = createMaterialTopTabNavigator({
         },
         style: {
             backgroundColor: '#083451',
-            height: height* 0.07,
+            height: height* 0.08,
         },
         indicatorStyle: {
             backgroundColor: '#f27e10'

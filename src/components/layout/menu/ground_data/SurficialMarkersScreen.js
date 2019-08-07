@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-export default class Landing extends Component {
+export default class SurficialMarkersScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ export default class Landing extends Component {
   render() {
     return (
       <View>
-        <Text> Landing </Text>
+        <Text> SurficialMarkersScreen </Text>
       </View>
     );
   }

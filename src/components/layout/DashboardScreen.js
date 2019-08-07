@@ -79,13 +79,13 @@ export default class DashboardScreen extends Component {
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Data{"\n"}Analysis</Text>
               </View>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("GroundData")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Ground Data</Text>
               </View>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("SensorData")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Sensor Data</Text>
@@ -93,19 +93,19 @@ export default class DashboardScreen extends Component {
             </View>
             <View style={ContainerStyle.menu_row}>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("Maintenance")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Maintenance</Text>
               </View>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("Events")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Events</Text>
               </View>
               <View style={[ContainerStyle.menu_container]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {this.props.navigation.navigate("DataSync")}}>
                   <Image style={ImageStyle.seal} source={require('../../assets/menu/ewi.png')}></Image>
                 </TouchableOpacity>
                 <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Data Sync</Text>

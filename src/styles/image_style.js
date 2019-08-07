@@ -6,7 +6,7 @@ let {height} = Dimensions.get('window');
 
 const ImageStyle = StyleSheet.create({
    seal: {
-      height: height * 0.11,
+      height: height * 0.12,
       width: width * 0.23,
    },
    background: {

@@ -1,21 +1,21 @@
 import { Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
-import CurrentAlertScreen from '../../../components/layout/menu/alert_generation/CurrentAlertScreen';
-import AlertValidationScreen from '../../../components/layout/menu/alert_generation/AlertValidationScreen';
+import TemplatesScreen from '../../../components/layout/menu/events/TemplatesScreen'
+import TemplateSettingsScreen from '../../../components/layout/menu/events/TemplateSettingsScreen'
 
 let {height} = Dimensions.get('window');
 
-const AlertGeneration = createMaterialTopTabNavigator({
-    CurrentAlert: {
-        screen: CurrentAlertScreen,
+const Events = createMaterialTopTabNavigator({
+    Templates: {
+        screen: TemplatesScreen,
         navigationOptions: {
-            tabBarLabel: 'Latest Alert Level'
+            tabBarLabel: 'Templates'
         },
     },
-    AlertValidation: {
-        screen: AlertValidationScreen,
+    TemplateSettings: {
+        screen: TemplateSettingsScreen,
         navigationOptions: {
-            tabBarLabel: 'Alert Validation'
+            tabBarLabel: 'Settings'
         },
     }
 }, {
@@ -34,4 +34,4 @@ const AlertGeneration = createMaterialTopTabNavigator({
     }
 });
 
-export default createAppContainer(AlertGeneration);
+export default createAppContainer(Events);
