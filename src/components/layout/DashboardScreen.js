@@ -26,7 +26,6 @@ export default class DashboardScreen extends Component {
       'Notice',
       'Communication Module',
       [
-        
         {text: 'Cancel', onPress: ()=> console.log('OK Pressed'),style: 'cancel'},
         {text: 'Call', onPress: ()=> Linking.openURL('tel:')},
         {text: 'SMS', onPress: () => Linking.openURL(`sms:?addresses=null&body=`)}

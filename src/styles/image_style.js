@@ -9,6 +9,13 @@ const ImageStyle = StyleSheet.create({
       height: height * 0.12,
       width: width * 0.23,
    },
+   hazard_maps: {
+      marginTop: '5%',
+      marginBottom: '5%',
+      height: width * 0.637,
+      width: '100%',
+      backgroundColor: '#e1e4e8'
+   },
    background: {
     flex: 1,
    },

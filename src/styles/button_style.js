@@ -13,7 +13,12 @@ const ButtonStyle = StyleSheet.create({
     elevation: 20
    },
    medium: {
-
+      backgroundColor: '#083451',
+      borderColor: '#083451',
+      borderRadius: 50,
+      borderWidth: 1,
+      elevation: 20,
+      width: width/2
    },
    small: {
        

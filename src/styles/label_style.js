@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native'
-import {Dimensions} from 'react-native';
-  
-let {width} = Dimensions.get('window');
-let {height} = Dimensions.get('window');
+import { Dimensions } from 'react-native';
+
+let { width } = Dimensions.get('window');
+let { height } = Dimensions.get('window');
 
 const LabelStyle = StyleSheet.create({
    large_label: {
-        fontSize: width * 0.06,
+      fontSize: width * 0.06,
    },
    medium_label: {
       fontSize: width * 0.04,
@@ -21,7 +21,7 @@ const LabelStyle = StyleSheet.create({
 
    },
    success: {
-       
+
    },
    notice: {
 
@@ -31,18 +31,18 @@ const LabelStyle = StyleSheet.create({
       textAlign: 'center'
    },
    default: {
-    color: '#fff',
-    textAlign: 'center',
-    paddingTop: height * 0.03 ,
-    paddingBottom: height * 0.03,
-    textShadowColor: '#000',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 10
+      color: '#fff',
+      textAlign: 'center',
+      paddingTop: height * 0.03,
+      paddingBottom: height * 0.03,
+      textShadowColor: '#000',
+      textShadowOffset: { width: 1, height: 1 },
+      textShadowRadius: 10
    },
    branding: {
-    color: '#083451',
-    textAlign: 'center',
-    paddingBottom: height * 0.03,
+      color: '#083451',
+      textAlign: 'center',
+      paddingBottom: height * 0.03,
    }
 })
 
