@@ -20,6 +20,9 @@ const LabelStyle = StyleSheet.create({
    warning: {
 
    },
+   link: {
+      color: '#8bc4f0'
+   },
    success: {
 
    },

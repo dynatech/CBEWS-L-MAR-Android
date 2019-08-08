@@ -29,9 +29,9 @@ export default class LoginScreen extends Component {
                     <Image style={ImageStyle.seal} source={require('../../assets/dost_seal.png')}></Image>
                 </View>
                 <View style={ContainerStyle.login_content}>
-                    <Text style={[LabelStyle.large_label, LabelStyle.default]}>Community Based Early Warning Information for Landslides</Text>
-                    <TextInput style={[InputStyle.large, InputStyle.default]} placeholder="Username" placeholderTextColor="#fff" ></TextInput>
-                    <TextInput style={[InputStyle.large, InputStyle.default]} placeholder="Password" placeholderTextColor="#fff" ></TextInput>
+                    <Text style={[LabelStyle.large_label, LabelStyle.default, InputStyle.white]}>Community Based Early Warning Information for Landslides</Text>
+                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" ></TextInput>
+                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Password" placeholderTextColor="#fff" ></TextInput>
                     <Text></Text>
                     <Text></Text>
                     <TouchableOpacity style={ButtonStyle.large} onPress={()=> this.validateCredentials()}>

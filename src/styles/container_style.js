@@ -25,6 +25,13 @@ const ContainerStyle = StyleSheet.create({
      dashboard_menu: {
           flex: 1,
      },
+     datatable_content: {
+          flex: 0.5
+     },
+     input_label_combo: {
+          // flexDirection: 'row'
+          padding: 10
+     },
      menu_row: {
           flexDirection: 'row',
           alignContent: 'center',
