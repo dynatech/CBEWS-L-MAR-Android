@@ -6,7 +6,6 @@ import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
-// import ProgressiveImage from '../../../../reducers/ProgressiveImage';
 
 export default class HazardMapScreen extends Component {
   constructor(props) {
