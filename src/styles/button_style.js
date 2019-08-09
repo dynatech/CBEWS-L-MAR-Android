@@ -10,6 +10,8 @@ const ButtonStyle = StyleSheet.create({
     borderColor: '#083451',
     borderRadius: 50,
     borderWidth: 1,
+    marginRight: 10,
+    marginLeft: 10,
     elevation: 20
    },
    medium: {
@@ -18,10 +20,19 @@ const ButtonStyle = StyleSheet.create({
       borderRadius: 50,
       borderWidth: 1,
       elevation: 20,
+      marginRight: 10,
+      marginLeft: 10,
       width: width/2
    },
    small: {
-       
+      backgroundColor: '#083451',
+      borderColor: '#083451',
+      borderRadius: 50,
+      borderWidth: 1,
+      elevation: 20,
+      marginRight: 10,
+      marginLeft: 10,
+      width: width/3
    },
    large_text: {
     color: '#fff',
@@ -31,7 +42,11 @@ const ButtonStyle = StyleSheet.create({
     padding: 10
    },
    medium_text: {
-
+      color: '#fff',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: 15,
+      padding: 5
    },
    small_text: {
 
