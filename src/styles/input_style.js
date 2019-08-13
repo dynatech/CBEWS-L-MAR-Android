@@ -26,7 +26,7 @@ const InputStyle = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
         borderRadius: 5,
-        elevation: 1
+        elevation: 2
     },
     disabled: {
 

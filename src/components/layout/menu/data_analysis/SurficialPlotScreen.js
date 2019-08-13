@@ -20,7 +20,7 @@ export default class SurficialPlotScreen extends Component {
         <Image
           style={ImageStyle.hazard_maps}
           source={require('../../../../assets/test_graphs/surficial.png')}
-          resizeMode="center" />
+          resizeMode="contain" />
           <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Pinch graph to zoom in/out.</Text>
       </View>
     );

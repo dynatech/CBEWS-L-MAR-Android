@@ -16,6 +16,13 @@ const ImageStyle = StyleSheet.create({
       width: '100%',
       backgroundColor: '#e1e4e8'
    },
+   graphs: {
+      marginTop: '5%',
+      marginBottom: '5%',
+      height: width * 0.637,
+      width: '100%',
+      backgroundColor: '#e1e4e8',
+   },
    background: {
     flex: 1,
    },

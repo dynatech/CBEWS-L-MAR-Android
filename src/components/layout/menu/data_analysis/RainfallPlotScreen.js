@@ -18,9 +18,9 @@ export default class RainfallPlotScreen extends Component {
       <View style={ContainerStyle.content}>
         <Text style={[LabelStyle.large_label, LabelStyle.branding]}>Rainfall data as of August 16, 2019 04:00 PM</Text>
         <Image
-          style={ImageStyle.hazard_maps}
-          source={require('../../../../assets/test_graphs/rainfall.png')}
-          resizeMode="center" />
+          style={ImageStyle.graphs}
+          source={require('../../../../assets/test_graphs/rain_cumulative.png')}
+          resizeMode="contain" />
           <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Pinch graph to zoom in/out.</Text>
       </View>
     );

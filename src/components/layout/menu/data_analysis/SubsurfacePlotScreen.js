@@ -18,17 +18,9 @@ export default class SubsurfacePlotScreen extends Component {
         <View style={ContainerStyle.content}>
           <Text style={[LabelStyle.large_label, LabelStyle.branding]}>Subsurface data as of August 16, 2019 04:00 PM</Text>
           <Image
-            style={ImageStyle.hazard_maps}
+            style={ImageStyle.graphs}
             source={require('../../../../assets/test_graphs/sub1.png')}
-            resizeMode="center" />
-          <Image
-            style={ImageStyle.hazard_maps}
-            source={require('../../../../assets/test_graphs/sub2.png')}
-            resizeMode="center" />
-          <Image
-            style={ImageStyle.hazard_maps}
-            source={require('../../../../assets/test_graphs/sub3.png')}
-            resizeMode="center" />
+            resizeMode="contain" />
           <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Pinch graph to zoom in/out.</Text>
         </View>
       </ScrollView>
