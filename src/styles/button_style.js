@@ -12,7 +12,7 @@ const ButtonStyle = StyleSheet.create({
     borderWidth: 1,
     marginRight: 10,
     marginLeft: 10,
-    elevation: 20
+    elevation: 20,
    },
    medium: {
       backgroundColor: '#083451',
@@ -33,6 +33,16 @@ const ButtonStyle = StyleSheet.create({
       marginRight: 10,
       marginLeft: 10,
       width: width/3
+   },
+   extra_small: {
+      backgroundColor: '#083451',
+      borderColor: '#083451',
+      borderRadius: 50,
+      borderWidth: 1,
+      elevation: 20,
+      marginRight: 10,
+      marginLeft: 10,
+      width: width/4
    },
    large_text: {
     color: '#fff',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native';
 import { ImageStyle } from '../../../../styles/image_style'
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
@@ -40,7 +40,9 @@ export default class CommunityRiskAssessmentScreen extends Component {
         <List containerStyle={{ marginBottom: 20 , flex: 0.9}}>
           {
             this.state.list.map((l) => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=> {
+                ToastAndroid.show("Download success!.", ToastAndroid.SHORT);
+              }}>
                 <ListItem
                   key={l.name}
                   title={l.name}

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity} from 'react-native';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
+import SmsToggle from '../../../../reducers/SmsToggle';
 
 export default class CurrentAlertScreen extends Component {
   constructor(props) {
@@ -11,6 +12,10 @@ export default class CurrentAlertScreen extends Component {
       alert_level: 'Alert Level 2',
       alert_description: 'Due to manifestation of movement observed by LEWC on-site.'
     };
+  }
+
+  sendEwi() {
+
   }
 
   render() {
@@ -24,7 +29,7 @@ export default class CurrentAlertScreen extends Component {
           <Text style={[LabelStyle.medium_label]}>Alert validity: 2019-08-17 16:00:00</Text>
           <Text style={[LabelStyle.medium_label]}>Prepared by: Juan Dela Cruz</Text>
           <View style={{ paddingTop: '10%', alignItems: 'center' }}>
-            <TouchableOpacity style={ButtonStyle.medium}>
+            <TouchableOpacity style={ButtonStyle.medium} onPress={()=> { SmsToggle.EWI_SMS()}}>
               <Text style={ButtonStyle.large_text}>Send EWI</Text>
             </TouchableOpacity>
           </View>

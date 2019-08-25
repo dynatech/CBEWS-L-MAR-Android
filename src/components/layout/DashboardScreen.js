@@ -15,12 +15,6 @@ export default class DashboardScreen extends Component {
     };
   }
 
-  static navigationOptions = {
-    drawerIcon: ({ tintColor }) => (
-      <Icon name="home" style={{ fontSize: 24, color: tintColor }}></Icon>
-    )
-  };
-
   initiateCallOrSms() {
     Alert.alert(
       'Notice',

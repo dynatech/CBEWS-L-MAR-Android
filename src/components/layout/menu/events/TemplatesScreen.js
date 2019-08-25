@@ -39,12 +39,12 @@ export default class TemplatesScreen extends Component {
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ language: itemValue })
               }>
-              <Picker.Item label="Invitation for events" value="java" />
-              <Picker.Item label="Ground measurement reminders" value="js" />
-              <Picker.Item label="Request to reset datalogger" value="java" />
-              <Picker.Item label="Alert validation" value="js" />
-              <Picker.Item label="Data validation" value="java" />
-              <Picker.Item label="Send Early Warning Information (EWI)" value="js" />
+              <Picker.Item label="Invitation for events" value="invitations" />
+              <Picker.Item label="Ground measurement reminders" value="gndmeas_reminder" />
+              <Picker.Item label="Request to reset datalogger" value="req_datalogger" />
+              <Picker.Item label="Alert validation" value="alert_validation" />
+              <Picker.Item label="Data validation" value="data_validation" />
+              <Picker.Item label="Send Early Warning Information (EWI)" value="ewi" />
             </Picker>
           </View>
           <View style={{ paddingTop: '10%', alignItems: 'center' }}>

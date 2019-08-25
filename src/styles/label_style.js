@@ -57,6 +57,10 @@ const LabelStyle = StyleSheet.create({
    },
    level_three: {
       color: '#ac4a4b'
+   },
+   header_text: {
+      color: 'white',
+      fontSize: width * 0.05
    }
 })
 

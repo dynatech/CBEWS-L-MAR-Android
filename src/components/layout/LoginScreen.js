@@ -10,12 +10,18 @@ export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: "",
+      password: ""
     };
   }
 
   validateCredentials() {
-    ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
-    this.props.navigation.navigate('Dashboard');
+    if (this.state.username == "" || this.state.password == "") {
+      ToastAndroid.show("Login failed, invalid username or password.", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
+      this.props.navigation.navigate('Dashboard');
+    }
   }
 
   render() {
@@ -30,13 +36,13 @@ export default class LoginScreen extends Component {
                 </View>
                 <View style={ContainerStyle.login_content}>
                     <Text style={[LabelStyle.large_label, LabelStyle.default, InputStyle.white]}>Community Based Early Warning Information for Landslides</Text>
-                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" ></TextInput>
-                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Password" placeholderTextColor="#fff" ></TextInput>
-                    <Text></Text>
-                    <Text></Text>
+                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" onChangeText={text => this.setState({ username: text })}></TextInput>
+                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} secureTextEntry={true} placeholder="Password" placeholderTextColor="#fff" onChangeText={text => this.setState({ password: text })}></TextInput>
                     <TouchableOpacity style={ButtonStyle.large} onPress={()=> this.validateCredentials()}>
                         <Text style={ButtonStyle.large_text}>Sign in</Text>
                     </TouchableOpacity>
+                    <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Forgot password?</Text>
+                    <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Create account</Text>
                 </View>
             </View>
         </ImageBackground>

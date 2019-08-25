@@ -5,11 +5,10 @@ let { width } = Dimensions.get('window');
 let { height } = Dimensions.get('window');
 
 const ContainerStyle = StyleSheet.create({
-     fluid: {
-
-     },
-     solid: {
-
+     header: {
+          backgroundColor: '#083451',
+          alignItems: 'center',
+          padding: '3.1%'
      },
      content: {
           flex: 1,
