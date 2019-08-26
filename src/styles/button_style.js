@@ -34,6 +34,26 @@ const ButtonStyle = StyleSheet.create({
       marginLeft: 10,
       width: width/3
    },
+   valid: {
+      backgroundColor: 'green',
+      borderColor: 'green',
+      borderRadius: 50,
+      borderWidth: 1,
+      elevation: 20,
+      marginRight: 10,
+      marginLeft: 10,
+      width: width/3
+   },
+   invalid: {
+      backgroundColor: 'red',
+      borderColor: 'red',
+      borderRadius: 50,
+      borderWidth: 1,
+      elevation: 20,
+      marginRight: 10,
+      marginLeft: 10,
+      width: width/3
+   },
    extra_small: {
       backgroundColor: '#083451',
       borderColor: '#083451',
