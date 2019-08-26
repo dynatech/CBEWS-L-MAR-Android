@@ -11,7 +11,140 @@ export default class ODMonitoringScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      datatable_row: [],
+      command_view: [],
+      datetime: "2018-08-16 13:00:00",
+      reporter: "David Guevarra",
+      rfmr: "Malakas na ulan ang di umano'y tumangay sa marker sa may baryo",
+      attachments: "N/A"
     };
+  }
+
+  componentDidMount() {
+    let temp_row = [];
+    let { datetime, reporter, rfmr, attachments } = this.state;
+    let temp_data = this.state
+    temp_row.push(
+      <DataTable.Row onPress={() => {
+        this.selectCell(temp_data)
+      }} onLongPress={()=> {this.validateMoMs(temp_data)}}>
+        <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
+        <DataTable.Cell style={{ width: 150 }}>{reporter}</DataTable.Cell>
+        <DataTable.Cell style={{ width: 200 }}>{rfmr}</DataTable.Cell>
+        <DataTable.Cell style={{ width: 150 }}>{attachments}</DataTable.Cell>
+      </DataTable.Row>
+    )
+    this.resetState()
+    this.setState({ datatable_row: temp_row })
+    this.addVisible()
+  }
+  
+  resetState() {
+    this.setState({
+      datetime: "",
+      reporter: "",
+      rfmr: "",
+      attachments: ""
+    })
+  }
+
+  selectCell(data) {
+    let { datetime, reporter, rfmr, attachments } = data;
+
+    this.setState({
+      datetime: datetime,
+      reporter: reporter,
+      rfmr: rfmr,
+      attachments: attachments
+    });
+    this.modifyVisible();
+  }
+
+  validateOD(data) {
+    Alert.alert(
+      'Notice',
+      'Are you sure you want to raise this as an alert?',
+      [ 
+        {text: 'Cancel', onPress: () => {console.log("Cancelled")}},
+        {text: 'Alert 2', onPress: ()=>  ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)},
+        {text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)}
+      ]
+    )
+  }
+
+  addODMonitoring() {
+    let { datetime, reporter, rfmr, attachments } = this.state;
+    let temp_row = []
+    let temp_data = this.state
+    temp_row.push(this.state.datatable_row)
+    temp_row.push(
+      <DataTable.Row onPress={() => {
+        this.selectCell(temp_data)
+      }} onLongPress={()=> {this.validateOD(temp_data)}}>
+        <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
+        <DataTable.Cell style={{ width: 150 }}>{reporter}</DataTable.Cell>
+        <DataTable.Cell style={{ width: 200 }}>{rfmr}</DataTable.Cell>
+        <DataTable.Cell style={{ width: 150 }}>{attachments}</DataTable.Cell>
+      </DataTable.Row>
+    )
+    this.setState({ datatable_row: temp_row })
+  }
+
+  addVisible() {
+    this.setState({
+      command_view: [
+        <View style={{ paddingTop: '10%', alignItems: 'center' }}>
+          <TouchableOpacity style={ButtonStyle.medium} onPress={() => { this.addODMonitoring() }}>
+            <Text style={ButtonStyle.large_text}>Add +</Text>
+          </TouchableOpacity>
+        </View>
+      ]
+    })
+  }
+
+  modifyVisible() {
+    this.setState({
+      command_view: [
+        <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row'}}>
+          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.updateODMonitoring() }}>
+            <Text style={ButtonStyle.medium_text}>Update</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.deleteODMonitoring() }}>
+            <Text style={ButtonStyle.medium_text}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.cancelModification() }}>
+            <Text style={ButtonStyle.medium_text}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      ]
+    })
+  }
+
+  cancelModification() {
+    this.addVisible()
+    this.resetState()
+  }
+
+  updateODMonitoring(data) {
+    Alert.alert(
+      'Notice',
+      'Are you sure you want to update this entry?',
+      [
+        {text: 'No', onPress: ()=> {console.log("Cancelled")},style: 'cancel'},
+        {text: 'Yes', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)}
+      ]
+    )
+  }
+
+  deleteODMonitoring() {
+    Alert.alert(
+      'Notice',
+      'Are you sure you want to delete this entry?',
+      [
+        {text: 'No', onPress: ()=> {console.log("Cancelled")},style: 'cancel'},
+        {text: 'Yes', onPress: () => ToastAndroid.show("Successfully deleted!", ToastAndroid.SHORT)}
+      ]
+    )
   }
 
   render() {
@@ -23,56 +156,11 @@ export default class ODMonitoringScreen extends Component {
               <DataTable>
                 <DataTable.Header>
                   <DataTable.Title style={{ width: 150 }}>Date and Time</DataTable.Title>
-                  <DataTable.Title style={{ width: 200 }}>Reporter</DataTable.Title>
-                  <DataTable.Title style={{ width: 150 }}>Reason for monitoring request</DataTable.Title>
+                  <DataTable.Title style={{ width: 150 }}>Reporter</DataTable.Title>
+                  <DataTable.Title style={{ width: 200 }}>Reason for monitoring request</DataTable.Title>
                   <DataTable.Title style={{ width: 150 }}>Attachments</DataTable.Title>
                 </DataTable.Header>
-
-                <DataTable.Row onPress={() => {
-                  this.selectCell()
-                }}>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>2</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 200 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row onPress={() => {
-                  this.selectCell()
-                }}>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>2</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 200 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row onPress={() => {
-                  this.selectCell()
-                }}>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>2</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 200 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row onPress={() => {
-                  this.selectCell()
-                }}>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>2</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 200 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row onPress={() => {
-                  this.selectCell()
-                }}>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>2</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 200 }}>Sample data</DataTable.Cell>
-                  <DataTable.Cell style={{ width: 150 }}>Sample data</DataTable.Cell>
-                </DataTable.Row>
-
+                {this.state.datatable_row}
               </DataTable>
             </ScrollView>
             <DataTable.Pagination
@@ -84,6 +172,7 @@ export default class ODMonitoringScreen extends Component {
           </View>
           <View>
             <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click row to modify.</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Hold press row to raise as alert.</Text>
           </View>
           <View>
             <View style={ContainerStyle.input_label_combo}>
@@ -102,11 +191,7 @@ export default class ODMonitoringScreen extends Component {
               <Text style={LabelStyle.medium_label}>Description</Text>
               <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
             </View>
-            <View style={{ paddingTop: '10%', alignItems: 'center' }}>
-              <TouchableOpacity style={ButtonStyle.medium}>
-                <Text style={ButtonStyle.large_text}>Add +</Text>
-              </TouchableOpacity>
-            </View>
+            {this.state.command_view}
           </View>
         </View>
       </ScrollView>
