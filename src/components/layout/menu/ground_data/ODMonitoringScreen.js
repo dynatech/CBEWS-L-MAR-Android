@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert, ToastAndroid } from 'react-native';
 import { ImageStyle } from '../../../../styles/image_style'
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
@@ -27,7 +27,7 @@ export default class ODMonitoringScreen extends Component {
     temp_row.push(
       <DataTable.Row onPress={() => {
         this.selectCell(temp_data)
-      }} onLongPress={()=> {this.validateMoMs(temp_data)}}>
+      }} onLongPress={()=> {this.validateOD(temp_data)}}>
         <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
         <DataTable.Cell style={{ width: 150 }}>{reporter}</DataTable.Cell>
         <DataTable.Cell style={{ width: 200 }}>{rfmr}</DataTable.Cell>

@@ -10,18 +10,54 @@ export default class MaintenanceLogsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modification_view: []
+      modification_view: [],
+      logs_view: [],
+      logs_container: {},
+      toma: "",
+      remarks: "",
+      incharge: "",
+      updater: ""
     };
   }
 
 
   addLog(day) {
-    this.renderModification()
+    this.renderModification();
+    this.renderLogView(day);
+  }
+
+  renderLogView(day) {
+    let view = [];
+    if (this.state.logs_container[day] == null || this.state.logs_container[day] == undefined) {
+      view = [
+        <View>
+          <View style={ContainerStyle.hr}></View>
+          <View style={ContainerStyle.content}>
+            <Text style={LabelStyle.medium_label}>No activity recorded.</Text>
+          </View>
+        </View>
+
+      ];
+    } else {
+      view = [
+        <View>
+          <View style={ContainerStyle.hr}></View>
+          <View style={ContainerStyle.content}>
+            <Text style={LabelStyle.medium_label}>Type of Maintenance Activity: </Text>
+            <Text style={LabelStyle.medium_label}>Remarks: </Text>
+            <Text style={LabelStyle.medium_label}>In-charge: </Text>
+            <Text style={LabelStyle.medium_label}>Updater: </Text>
+          </View>
+        </View>
+      ];
+    }
+    this.setState({logs_view: view})
   }
 
   renderModification() {
     let view = [
       <View>
+        <View style={ContainerStyle.hr}></View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Type of Maintenance Activity</Text>
           <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
@@ -56,6 +92,7 @@ export default class MaintenanceLogsScreen extends Component {
           <View>
             <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click date to add log.</Text>
           </View>
+          {this.state.logs_view}
           {this.state.modification_view}
         </View>
       </ScrollView>

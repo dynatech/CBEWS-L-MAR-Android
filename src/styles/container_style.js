@@ -49,6 +49,12 @@ const ContainerStyle = StyleSheet.create({
      },
      menu_container: {
           textAlign: 'center',
+     },
+     hr: {
+       borderColor: '#083451',
+       borderRadius: 10,
+       borderBottomWidth: 2,
+       paddingBottom: 5
      }
 })
 
