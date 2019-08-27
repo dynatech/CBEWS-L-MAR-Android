@@ -33,10 +33,8 @@ export default class MaintenanceLogsScreen extends Component {
     let {toma, remarks, incharge, updater} = this.state
     let temp = [toma, remarks, incharge, updater]
     let temp_container = this.state.logs_container
-    console.log(date)
     temp_container[date] = temp
     this.setState({logs_container: temp_container})
-    console.log(this.state.logs_container)
   }
 
   renderLogView(day) {
