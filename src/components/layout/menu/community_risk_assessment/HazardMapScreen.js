@@ -16,12 +16,10 @@ export default class HazardMapScreen extends Component {
   }
 
   showMapFunction() {
-    console.log("SHOW")
     this.setState({ isMapVisible: true })
   }
 
   hideMapFunction() {
-    console.log("HIDE")
     this.setState({ isMapVisible: false })
   }
 

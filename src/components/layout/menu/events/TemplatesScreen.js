@@ -11,6 +11,7 @@ export default class TemplatesScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      template: ""
     };
   }
 
@@ -34,10 +35,10 @@ export default class TemplatesScreen extends Component {
           <Text style={LabelStyle.medium_label}>Select template:</Text>
           <View style={InputStyle.default}>
             <Picker
-              selectedValue={this.state.language}
+              selectedValue={this.state.template}
               style={{ height: 50, width: '100%' }}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({ language: itemValue })
+                this.setState({ template: itemValue })
               }>
               <Picker.Item label="Invitation for events" value="invitations" />
               <Picker.Item label="Ground measurement reminders" value="gndmeas_reminder" />
