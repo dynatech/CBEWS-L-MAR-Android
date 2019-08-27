@@ -10,6 +10,8 @@ export default class TemplateSettingsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      template_msg: "<SAMPLE TEMPLATE HERE>",
+      template_key: "Invitation for events",
       template: "",
       view: [],
       command: "Modify"
@@ -35,11 +37,20 @@ export default class TemplateSettingsScreen extends Component {
       <View style={{padding: 10}}>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Template Type</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput 
+            style={[InputStyle.medium, InputStyle.default, InputStyle.black]} 
+            value={this.state.template_key} 
+            onChangeText={text => this.setState({ template_key: text })}>
+          </TextInput>
         </View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Template SMS</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput multiline = {true} 
+            numberOfLines = {6} 
+            style={[InputStyle.medium, InputStyle.default, InputStyle.black]} 
+            value={this.state.template_msg} 
+            onChangeText={text => this.setState({ template_msg: text })}>
+          </TextInput>
         </View>
       </View>
     ]
@@ -55,10 +66,10 @@ export default class TemplateSettingsScreen extends Component {
           <Text style={LabelStyle.medium_label}>Select template</Text>
           <View style={InputStyle.default}>
             <Picker
-              selectedValue={this.state.template}
+              selectedValue={this.state.template_key}
               style={{ height: 50, width: '100%'}}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({ template: itemValue })
+                this.setState({ template_key: itemValue })
               }>
               <Picker.Item label="Invitation for events" value="invitations" />
               <Picker.Item label="Ground measurement reminders" value="gndmeas_reminder" />

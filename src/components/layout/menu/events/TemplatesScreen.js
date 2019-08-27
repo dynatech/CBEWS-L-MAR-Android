@@ -11,13 +11,13 @@ export default class TemplatesScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      template: ""
+      template: "<SAMPLE_TEMPLATE_HERE>"
     };
   }
 
   launchSMS() {
     SendSMS.send({
-      body: "<SAMPLE_TEMPLATE_HERE>",
+      body: this.state.template,
       recipients: ["09090909090"],
       successTypes: ['sent', 'queued'],
       allowAndroidSendWithoutReadPermission: true
