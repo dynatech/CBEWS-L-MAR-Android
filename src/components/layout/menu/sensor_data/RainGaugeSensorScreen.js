@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableHighlight, Modal } from 'react-native';
 import { ImageStyle } from '../../../../styles/image_style'
 import { ContainerStyle } from '../../../../styles/container_style'
 import { LabelStyle } from '../../../../styles/label_style';

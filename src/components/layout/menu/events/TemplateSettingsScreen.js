@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Picker, TouchableOpacity, TextInput, ToastAndroid } from 'react-native';
 import { ImageStyle } from '../../../../styles/image_style'
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
@@ -22,8 +22,12 @@ export default class TemplateSettingsScreen extends Component {
     if (this.state.template == "new_template") {
       this.addTemplate()
     } else {
-      this.setState({command: "Modify"})
+      this.setState({command: "Save"})
       this.generateField()
+    }
+
+    if (this.state.command == "Save") {
+      ToastAndroid.show("Template up to date!", ToastAndroid.SHORT)
     }
   }
 
@@ -66,10 +70,10 @@ export default class TemplateSettingsScreen extends Component {
           <Text style={LabelStyle.medium_label}>Select template</Text>
           <View style={InputStyle.default}>
             <Picker
-              selectedValue={this.state.template_key}
+              selectedValue={this.state.template}
               style={{ height: 50, width: '100%'}}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({ template_key: itemValue })
+                this.setState({ template: itemValue })
               }>
               <Picker.Item label="Invitation for events" value="invitations" />
               <Picker.Item label="Ground measurement reminders" value="gndmeas_reminder" />

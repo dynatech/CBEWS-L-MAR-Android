@@ -16,14 +16,27 @@ export default class MaintenanceLogsScreen extends Component {
       toma: "",
       remarks: "",
       incharge: "",
-      updater: ""
+      updater: "",
+      selected_date: ""
     };
   }
 
 
   addLog(day) {
+    this.setState({selected_date: day})
     this.renderModification();
     this.renderLogView(day);
+  }
+
+  saveLog() {
+    let date = this.state.selected_date
+    let {toma, remarks, incharge, updater} = this.state
+    let temp = [toma, remarks, incharge, updater]
+    let temp_container = this.state.logs_container
+    console.log(date)
+    temp_container[date] = temp
+    this.setState({logs_container: temp_container})
+    console.log(this.state.logs_container)
   }
 
   renderLogView(day) {
@@ -39,14 +52,16 @@ export default class MaintenanceLogsScreen extends Component {
 
       ];
     } else {
+      console.log(this.state.logs_container);
+      let {toma, remarks, incharge, updater} = this.state
       view = [
         <View>
           <View style={ContainerStyle.hr}></View>
           <View style={ContainerStyle.content}>
-            <Text style={LabelStyle.medium_label}>Type of Maintenance Activity: </Text>
-            <Text style={LabelStyle.medium_label}>Remarks: </Text>
-            <Text style={LabelStyle.medium_label}>In-charge: </Text>
-            <Text style={LabelStyle.medium_label}>Updater: </Text>
+            <Text style={LabelStyle.medium_label}>Type of Maintenance Activity: {toma}</Text>
+            <Text style={LabelStyle.medium_label}>Remarks: {remarks}</Text>
+            <Text style={LabelStyle.medium_label}>In-charge: {incharge}</Text>
+            <Text style={LabelStyle.medium_label}>Updater: {updater}</Text>
           </View>
         </View>
       ];
@@ -60,22 +75,22 @@ export default class MaintenanceLogsScreen extends Component {
         <View style={ContainerStyle.hr}></View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Type of Maintenance Activity</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => this.setState({ toma: text })}></TextInput>
         </View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Remarks</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => this.setState({ remarks: text })}></TextInput>
         </View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>In-charge</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => this.setState({ incharge: text })}></TextInput>
         </View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Updater</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => this.setState({ updater: text })}></TextInput>
         </View>
         <View style={{ paddingTop: '10%', alignItems: 'center' }}>
-          <TouchableOpacity style={ButtonStyle.medium}>
+          <TouchableOpacity style={ButtonStyle.medium} onPress={()=> this.saveLog()}>
             <Text style={ButtonStyle.large_text}>Add +</Text>
           </TouchableOpacity>
         </View>
