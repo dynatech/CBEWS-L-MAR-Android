@@ -6,6 +6,7 @@ import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
 import { DataTable } from 'react-native-paper';
+import SmsToggle from '../../../../reducers/SmsToggle'
 
 export default class MoMsScreen extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class MoMsScreen extends Component {
     temp_row.push(
       <DataTable.Row onPress={() => {
         this.selectCell(temp_data)
-      }} onLongPress={()=> {this.validateMoMs(temp_data)}}>
+      }} onLongPress={() => { this.validateMoMs(temp_data) }}>
         <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
         <DataTable.Cell style={{ width: 150 }}>{feature_type}</DataTable.Cell>
         <DataTable.Cell style={{ width: 200 }}>{reporter}</DataTable.Cell>
@@ -41,7 +42,7 @@ export default class MoMsScreen extends Component {
     this.setState({ datatable_row: temp_row })
     this.addVisible()
   }
-  
+
   resetState() {
     this.setState({
       datetime: "",
@@ -70,10 +71,10 @@ export default class MoMsScreen extends Component {
     Alert.alert(
       'Notice',
       'Are you sure you want to raise this as an alert?',
-      [ 
-        {text: 'Cancel', onPress: () => {console.log("Cancelled")}},
-        {text: 'Alert 2', onPress: ()=>  ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)},
-        {text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)}
+      [
+        { text: 'Cancel', onPress: () => { console.log("Cancelled") } },
+        { text: 'Alert 2', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT) },
+        { text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT) }
       ]
     )
   }
@@ -87,7 +88,7 @@ export default class MoMsScreen extends Component {
     temp_row.push(
       <DataTable.Row onPress={() => {
         this.selectCell(temp_data)
-      }} onLongPress={()=> {this.validateMoMs(temp_data)}}>
+      }} onLongPress={() => { this.validateMoMs(temp_data) }}>
         <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
         <DataTable.Cell style={{ width: 150 }}>{feature_type}</DataTable.Cell>
         <DataTable.Cell style={{ width: 200 }}>{reporter}</DataTable.Cell>
@@ -113,17 +114,25 @@ export default class MoMsScreen extends Component {
   modifyVisible() {
     this.setState({
       command_view: [
-        <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row'}}>
-          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.updateMoMs() }}>
-            <Text style={ButtonStyle.medium_text}>Update</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.deleteMoMs() }}>
-            <Text style={ButtonStyle.medium_text}>Delete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.cancelModification() }}>
-            <Text style={ButtonStyle.medium_text}>Cancel</Text>
-          </TouchableOpacity>
+        <View>
+          <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row' }}>
+            <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.updateMoMs() }}>
+              <Text style={ButtonStyle.medium_text}>Update</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.deleteMoMs() }}>
+              <Text style={ButtonStyle.medium_text}>Delete</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.cancelModification() }}>
+              <Text style={ButtonStyle.medium_text}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ paddingTop: '10%', alignItems: 'center' }}>
+            <TouchableOpacity style={ButtonStyle.medium} onPress={() => { this.sendMoms() }}>
+              <Text style={ButtonStyle.medium_text}>Send MoMs</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
       ]
     })
   }
@@ -133,13 +142,20 @@ export default class MoMsScreen extends Component {
     this.resetState()
   }
 
+  sendMoms() {
+    let { datetime, feature_type, reporter, description,
+      attachments } = this.state;
+    let moms_template = "MAR EVENT"+datetime+" "+feature_type+" "+description+" "+reporter
+    SmsToggle.OPEN_SMSAPP(moms_template)
+  }
+
   updateMoMs(data) {
     Alert.alert(
       'Notice',
       'Are you sure you want to update this entry?',
       [
-        {text: 'No', onPress: ()=> {console.log("Cancelled")},style: 'cancel'},
-        {text: 'Yes', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)}
+        { text: 'No', onPress: () => { console.log("Cancelled") }, style: 'cancel' },
+        { text: 'Yes', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT) }
       ]
     )
   }
@@ -149,8 +165,8 @@ export default class MoMsScreen extends Component {
       'Notice',
       'Are you sure you want to delete this entry?',
       [
-        {text: 'No', onPress: ()=> {console.log("Cancelled")},style: 'cancel'},
-        {text: 'Yes', onPress: () => ToastAndroid.show("Successfully deleted!", ToastAndroid.SHORT)}
+        { text: 'No', onPress: () => { console.log("Cancelled") }, style: 'cancel' },
+        { text: 'Yes', onPress: () => ToastAndroid.show("Successfully deleted!", ToastAndroid.SHORT) }
       ]
     )
   }
@@ -189,7 +205,7 @@ export default class MoMsScreen extends Component {
 
               <DatePicker
                 customStyles={{ dateInput: { borderWidth: 0, } }}
-                style={[InputStyle.medium, { width: '94%'}, InputStyle.default, InputStyle.black]}
+                style={[InputStyle.medium, { width: '94%' }, InputStyle.default, InputStyle.black]}
                 date={this.state.datetime}
                 mode="datetime"
                 placeholder="Pick date and time"

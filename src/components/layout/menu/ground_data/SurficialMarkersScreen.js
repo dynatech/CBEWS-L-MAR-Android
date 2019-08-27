@@ -6,6 +6,7 @@ import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
 import { DataTable } from 'react-native-paper';
+import SmsToggle from '../../../../reducers/SmsToggle'
 
 export default class SurficialMarkersScreen extends Component {
   constructor(props) {
@@ -53,6 +54,14 @@ export default class SurficialMarkersScreen extends Component {
       weather: "",
       nagsukat: ""
     })
+  }
+
+  sendMeasurement(data) {
+    let { datetime, a, b, c,
+      weather, nagsukat} = this.state;
+
+    let measurement_template = "MAR ROUTINE "+datetime+" "+a+" "+b+" "+c+" "+weather+" "+nagsukat;
+    SmsToggle.OPEN_SMSAPP(measurement_template)
   }
 
   selectCell(data) {
@@ -106,17 +115,25 @@ export default class SurficialMarkersScreen extends Component {
   modifyVisible() {
     this.setState({
       command_view: [
-        <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row'}}>
-          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.updateSurficialMeasurement() }}>
-            <Text style={ButtonStyle.medium_text}>Update</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.deleteSurficialMeasurement() }}>
-            <Text style={ButtonStyle.medium_text}>Delete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.cancelModification() }}>
-            <Text style={ButtonStyle.medium_text}>Cancel</Text>
-          </TouchableOpacity>
+        <View>
+          <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row'}}>
+            <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.updateSurficialMeasurement() }}>
+              <Text style={ButtonStyle.medium_text}>Update</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.deleteSurficialMeasurement() }}>
+              <Text style={ButtonStyle.medium_text}>Delete</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { this.cancelModification() }}>
+              <Text style={ButtonStyle.medium_text}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ paddingTop: '10%', alignItems: 'center'}}>
+            <TouchableOpacity style={ButtonStyle.medium} onPress={() => { this.sendMeasurement() }}>
+              <Text style={ButtonStyle.medium_text}>Send Measurement</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
       ]
     })
   }
@@ -194,23 +211,23 @@ export default class SurficialMarkersScreen extends Component {
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>A</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.a}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.a} onChangeText={text => this.setState({ a: text })}></TextInput>
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>B</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.b}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.b} onChangeText={text => this.setState({ b: text })}></TextInput>
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>C</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.c}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.c} onChangeText={text => this.setState({ c: text })}></TextInput>
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Weather</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.weather}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.weather} onChangeText={text => this.setState({ weather: text })}></TextInput>
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Nagsukat</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.nagsukat}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.nagsukat} onChangeText={text => this.setState({ nagsukat: text })}></TextInput>
             </View>
             {this.state.command_view}
           </View>
