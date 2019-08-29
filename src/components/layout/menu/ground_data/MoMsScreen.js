@@ -73,8 +73,8 @@ export default class MoMsScreen extends Component {
       'Are you sure you want to raise this as an alert?',
       [
         { text: 'Cancel', onPress: () => { console.log("Cancelled") } },
-        { text: 'Alert 2', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT) },
-        { text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT) }
+        { text: 'Alert 2', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.LONG) },
+        { text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.LONG) }
       ]
     )
   }
@@ -97,6 +97,7 @@ export default class MoMsScreen extends Component {
       </DataTable.Row>
     )
     this.setState({ datatable_row: temp_row })
+    ToastAndroid.show("Successfully added new Manifestation!", ToastAndroid.LONG)
   }
 
   addVisible() {

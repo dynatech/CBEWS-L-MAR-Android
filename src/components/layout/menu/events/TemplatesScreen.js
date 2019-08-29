@@ -11,7 +11,7 @@ export default class TemplatesScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      template: "<SAMPLE_TEMPLATE_HERE>"
+      template: "Magandang umaga. \n\nInaasahan ang pagpapadala ng LEWC ng ground data bago mag-11:30 AM para sa routine monitoring. Agad ipaalam kung may makikitang manipestasyon ng paggalaw ng lupa o iba pang pagbabago sa site. Salamat."
     };
   }
 

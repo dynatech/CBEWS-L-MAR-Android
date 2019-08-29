@@ -57,7 +57,7 @@ const AppDrawerNavigator = createDrawerNavigator({
   ContactUs: {
     screen: ContactUsScreen,
       navigationOptions: {
-        drawerLabel: "Contanct Us",
+        drawerLabel: "Contact Us",
         headerTitleStyle: {
           textAlign: 'center',
           flex: 1,

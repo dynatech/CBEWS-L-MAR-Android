@@ -2,8 +2,9 @@ import SendSMS from 'react-native-sms';
 
 const SmsToggle = {
     EWI_SMS: async function () {
-        // GET TEMPLATE FROM DB
-        let template = "<TEST_TEMPLATE_EWI>"
+        let template = "Magandang tanghali po.\n\n"+
+        "Alert 1 ang alert level sa Literon, Calbiga, Samar ngayong August 29, 2019 12:00 NN.\n"+
+        "Maaaring magkaroon ng landslide dahil sa nakaraan o kasalukuyang ulan. Ang recommended response ay PREPARE TO ASSIST THE HOUSEHOLDS AT RISK IN RESPONDING TO A HIGHER ALERT. Inaasahan namin ang pagpapadala ng LEWC ng ground data mamaya bago mag-3:30 PM. Ang susunod na Early Warning Information ay mamayang 4:00 PM."
         this.OPEN_SMSAPP(template)
     },
     ROUTINE_SMS: async function () {

@@ -10,8 +10,8 @@ export default class TemplateSettingsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      template_msg: "<SAMPLE TEMPLATE HERE>",
-      template_key: "Invitation for events",
+      template_msg: "Magandang umaga. \n\nInaasahan ang pagpapadala ng LEWC ng ground data bago mag-11:30 AM para sa routine monitoring. Agad ipaalam kung may makikitang manipestasyon ng paggalaw ng lupa o iba pang pagbabago sa site. Salamat.",
+      template_key: "Ground Measurement Reminder",
       template: "",
       view: [],
       command: "Modify"

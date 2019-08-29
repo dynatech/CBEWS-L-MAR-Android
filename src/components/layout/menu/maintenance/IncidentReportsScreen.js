@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ToastAndroid } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
@@ -17,7 +17,8 @@ export default class IncidentReportsScreen extends Component {
       datetime: "",
       incident: "",
       reporter: "",
-      selected_date: ""
+      selected_date: "",
+      marked_dates: {}
     };
   }
 
@@ -34,6 +35,10 @@ export default class IncidentReportsScreen extends Component {
     let temp_container = this.state.logs_container
     temp_container[date] = temp
     this.setState({logs_container: temp_container})
+    let temp_marked_dates = this.state.marked_dates;
+    temp_marked_dates.push({date: {date, marked: true}})
+    this.setState({marked_dates: temp_marked_dates});
+    ToastAndroid.show("Successfully added a new log!.", ToastAndroid.LONG);
   }
 
   renderLogView(day) {
@@ -105,7 +110,7 @@ export default class IncidentReportsScreen extends Component {
     return (
       <ScrollView>
         <View style={ContainerStyle.content}>
-          <Calendar onDayPress={(day) => { this.addLog(day.dateString) }}></Calendar>
+          <Calendar markedDates={this.state.marked_dates} onDayPress={(day) => { this.addLog(day.dateString) }}></Calendar>
           <View>
             <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click date to add log.</Text>
           </View>

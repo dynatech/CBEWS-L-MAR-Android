@@ -20,11 +20,11 @@ export default class AlertValidationScreen extends Component {
     if (isValid) {
       this.setState({ valid: [ButtonStyle.valid,]})
       this.setState({ invalid: [ButtonStyle.small]})
-      ToastAndroid.show("Alert Valid!", ToastAndroid.SHORT)
+      ToastAndroid.show("Alert Valid!", ToastAndroid.LONG)
     } else {
       this.setState({ invalid: [ButtonStyle.invalid]})
       this.setState({ valid: [ButtonStyle.small]})
-      ToastAndroid.show("Alert Invalid!", ToastAndroid.SHORT)
+      ToastAndroid.show("Alert Invalid!", ToastAndroid.LONG)
     }
   }
 

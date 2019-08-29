@@ -9,13 +9,9 @@ export default class CurrentAlertScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alert_level: 'Alert Level 2',
-      alert_description: 'Due to manifestation of movement observed by LEWC on-site.'
+      alert_level: 'Alert Level 1',
+      alert_description: 'Due to Rainfall exceeded threshold level.'
     };
-  }
-
-  sendEwi() {
-
   }
 
   render() {

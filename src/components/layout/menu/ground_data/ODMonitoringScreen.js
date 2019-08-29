@@ -88,6 +88,7 @@ export default class ODMonitoringScreen extends Component {
       </DataTable.Row>
     )
     this.setState({ datatable_row: temp_row })
+    ToastAndroid.show("Successfully added On-demand Monitoring!", ToastAndroid.LONG)
   }
 
   addVisible() {

@@ -98,6 +98,7 @@ export default class SurficialMarkersScreen extends Component {
       </DataTable.Row>
     )
     this.setState({ datatable_row: temp_row })
+    ToastAndroid.show("Successfully added new Surficial Measurement!", ToastAndroid.LONG)
   }
 
   addVisible() {
@@ -149,7 +150,7 @@ export default class SurficialMarkersScreen extends Component {
       'Are you sure you want to update this entry?',
       [
         {text: 'No', onPress: ()=> {console.log("Cancelled")},style: 'cancel'},
-        {text: 'Yes', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)}
+        {text: 'Yes', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.LONG)}
       ]
     )
   }
@@ -160,7 +161,7 @@ export default class SurficialMarkersScreen extends Component {
       'Are you sure you want to delete this entry?',
       [
         {text: 'No', onPress: ()=> {console.log("Cancelled")},style: 'cancel'},
-        {text: 'Yes', onPress: () => ToastAndroid.show("Successfully deleted!", ToastAndroid.SHORT)}
+        {text: 'Yes', onPress: () => ToastAndroid.show("Successfully deleted!", ToastAndroid.LONG)}
       ]
     )
   }
