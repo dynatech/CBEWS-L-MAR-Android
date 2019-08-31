@@ -18,8 +18,28 @@ export default class IncidentReportsScreen extends Component {
       incident: "",
       reporter: "",
       selected_date: "",
-      marked_dates: {}
+      marked_dates: {
+        '2019-09-01': {selected: true},
+        '2019-09-02': {selected: true},
+        '2019-09-03': {selected: true},
+        '2019-09-04': {selected: true}
+      }
     };
+  }
+
+  componentDidMount() {
+    let initial_data = [
+      ['2019-09-01', 'Lumubog yung data logger', 'John Geliberte'],
+      ['2019-09-02', 'May bara ang rain gauge', 'David Guevarra'],
+      ['2019-09-03', 'Nalowbat ang battery ng data logger', 'David Guevarra'],
+      ['2019-09-04', 'Natangal ang bakod sa sensor', 'John Geliberte']
+    ]
+
+    initial_data.forEach(element => {
+      let temp_container = this.state.logs_container
+      temp_container[element[0]] = element
+      this.setState({logs_container: temp_container})
+    });
   }
 
   addLog(day) {
@@ -35,9 +55,6 @@ export default class IncidentReportsScreen extends Component {
     let temp_container = this.state.logs_container
     temp_container[date] = temp
     this.setState({logs_container: temp_container})
-    let temp_marked_dates = this.state.marked_dates;
-    temp_marked_dates.push({date: {date, marked: true}})
-    this.setState({marked_dates: temp_marked_dates});
     ToastAndroid.show("Successfully added a new log!.", ToastAndroid.LONG);
   }
 
@@ -54,7 +71,11 @@ export default class IncidentReportsScreen extends Component {
 
       ];
     } else {
-      let {datetime, incident, reporter} = this.state
+      let temp_data = this.state.logs_container
+      let data = temp_data[day]
+      let datetime = data[0]
+      let incident = data[1]
+      let reporter = data[2]
       view = [
         <View>
           <View style={ContainerStyle.hr}></View>
@@ -69,6 +90,11 @@ export default class IncidentReportsScreen extends Component {
     this.setState({logs_view: view})
   }
 
+  refreshDatePicker(date) {
+    this.setState({ datetime: date })
+    this.renderModification()
+  }
+  
   renderModification() {
     let view = [
       <View>
@@ -76,16 +102,15 @@ export default class IncidentReportsScreen extends Component {
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Date of incident</Text>
           <DatePicker
-                customStyles={{ dateInput: { borderWidth: 0} }}
+                customStyles={{ dateInput: { borderWidth: 0, } }}
                 style={[InputStyle.medium, { width: '94%' }, InputStyle.default, InputStyle.black]}
                 date={this.state.datetime}
                 mode="datetime"
                 placeholder="Pick date and time"
-                showIcon={false}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
-                onDateChange={(date) => { this.setState({ datetime: date }) }}
+                onDateChange={(date) => { this.refreshDatePicker(date) }}
               />
         </View>
         <View style={ContainerStyle.input_label_combo}>
@@ -109,6 +134,7 @@ export default class IncidentReportsScreen extends Component {
   render() {
     return (
       <ScrollView>
+        
         <View style={ContainerStyle.content}>
           <Calendar markedDates={this.state.marked_dates} onDayPress={(day) => { this.addLog(day.dateString) }}></Calendar>
           <View>

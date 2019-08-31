@@ -192,7 +192,7 @@ export default class SurficialMarkersScreen extends Component {
             />
           </View>
           <View>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click row to modify.</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Tap row to modify.</Text>
           </View>
           <View>
             <View style={ContainerStyle.input_label_combo}>

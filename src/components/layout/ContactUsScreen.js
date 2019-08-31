@@ -17,7 +17,7 @@ export default class ContactUsScreen extends Component {
     return (
       <View>
         <View style={ContainerStyle.header}>
-          <Text style={LabelStyle.header_text}>About Us</Text>
+          <Text style={LabelStyle.header_text}>Contact Us</Text>
         </View>
         <ScrollView>
           <View style={ContainerStyle.content}>

@@ -11,7 +11,8 @@ export default class TemplatesScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      template: "Magandang umaga. \n\nInaasahan ang pagpapadala ng LEWC ng ground data bago mag-11:30 AM para sa routine monitoring. Agad ipaalam kung may makikitang manipestasyon ng paggalaw ng lupa o iba pang pagbabago sa site. Salamat."
+      template: "Magandang umaga. \n\nInaasahan ang pagpapadala ng LEWC ng ground data bago mag-11:30 AM para sa routine monitoring. Agad ipaalam kung may makikitang manipestasyon ng paggalaw ng lupa o iba pang pagbabago sa site. Salamat.",
+      template_key: ""
     };
   }
 
@@ -35,7 +36,7 @@ export default class TemplatesScreen extends Component {
           <Text style={LabelStyle.medium_label}>Select template:</Text>
           <View style={InputStyle.default}>
             <Picker
-              selectedValue={this.state.template}
+              selectedValue={this.state.template_key}
               style={{ height: 50, width: '100%' }}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ template: itemValue })

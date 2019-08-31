@@ -26,26 +26,26 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-        <ImageBackground style={ImageStyle.background} source={require('../../assets/login_screen.png') } blurRadius={1}>
-            <View style={ContainerStyle.content}>
-                <View style={ContainerStyle.seals}>
-                    <Image style={ImageStyle.seal} source={require('../../assets/mar_seal.png')}></Image>
-                    <Image style={ImageStyle.seal} source={require('../../assets/leon_seal.png')}></Image>
-                    <Image style={ImageStyle.seal} source={require('../../assets/dynaslope_seal.png')}></Image>
-                    <Image style={ImageStyle.seal} source={require('../../assets/dost_seal.png')}></Image>
-                </View>
-                <View style={ContainerStyle.login_content}>
-                    <Text style={[LabelStyle.large_label, LabelStyle.default, InputStyle.white]}>Community Based Early Warning Information for Landslides</Text>
-                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" onChangeText={text => this.setState({ username: text })}></TextInput>
-                    <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} secureTextEntry={true} placeholder="Password" placeholderTextColor="#fff" onChangeText={text => this.setState({ password: text })}></TextInput>
-                    <TouchableOpacity style={ButtonStyle.large} onPress={()=> this.validateCredentials()}>
-                        <Text style={ButtonStyle.large_text}>Sign in</Text>
-                    </TouchableOpacity>
-                    <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Forgot password?</Text>
-                    <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Create account</Text>
-                </View>
-            </View>
-        </ImageBackground>
+      <ImageBackground style={ImageStyle.background} source={require('../../assets/login_screen.png')} blurRadius={1}>
+        <View style={ContainerStyle.content}>
+          <View style={ContainerStyle.seals}>
+            <Image style={ImageStyle.seal} source={require('../../assets/dost_seal.png')}></Image>
+            <Image style={ImageStyle.seal} source={require('../../assets/dynaslope_seal.png')}></Image>
+            <Image style={ImageStyle.seal} source={require('../../assets/mar_seal.png')}></Image>
+            <Image style={ImageStyle.seal} source={require('../../assets/leon_seal.png')}></Image>
+          </View>
+          <View style={ContainerStyle.login_content}>
+            <Text style={[LabelStyle.large_label, LabelStyle.default, InputStyle.white]}>Community Based Early Warning Information for Landslides</Text>
+            <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" onChangeText={text => this.setState({ username: text })}></TextInput>
+            <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} secureTextEntry={true} placeholder="Password" placeholderTextColor="#fff" onChangeText={text => this.setState({ password: text })}></TextInput>
+            <TouchableOpacity style={ButtonStyle.large} onPress={() => this.validateCredentials()}>
+              <Text style={ButtonStyle.large_text}>Sign in</Text>
+            </TouchableOpacity>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Forgot password?</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Create account</Text>
+          </View>
+        </View>
+      </ImageBackground>
     );
   }
 }

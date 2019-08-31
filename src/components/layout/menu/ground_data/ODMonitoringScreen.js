@@ -66,8 +66,7 @@ export default class ODMonitoringScreen extends Component {
       'Are you sure you want to raise this as an alert?',
       [ 
         {text: 'Cancel', onPress: () => {console.log("Cancelled")}},
-        {text: 'Alert 2', onPress: ()=>  ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)},
-        {text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.SHORT)}
+        {text: 'Alert 1', onPress: ()=>  ToastAndroid.show("Alert 1 Raised!", ToastAndroid.SHORT)}
       ]
     )
   }
@@ -172,8 +171,8 @@ export default class ODMonitoringScreen extends Component {
             />
           </View>
           <View>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click row to modify.</Text>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Hold press row to raise as alert.</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Tap row to modify.</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Tap and hold row to raise as alert.</Text>
           </View>
           <View>
             <View style={ContainerStyle.input_label_combo}>

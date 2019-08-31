@@ -18,10 +18,29 @@ export default class MaintenanceLogsScreen extends Component {
       incharge: "",
       updater: "",
       selected_date: "",
-      marked_dates: []
+      marked_dates: {
+        '2019-09-01': {selected: true},
+        '2019-09-02': {selected: true},
+        '2019-09-03': {selected: true},
+        '2019-09-04': {selected: true}
+      }
     };
   }
 
+  componentDidMount() {
+    let initial_data = [
+      ['2019-09-01', 'Pinalitan ang rain gauge', 'John Geliberte', 'David Guevarra'],
+      ['2019-09-02', 'Pinalitan ang data logger', 'David Guevarra', 'David Guevarra'],
+      ['2019-09-03', 'Pinalitan ang SD Card', 'David Guevarra', 'John Geliberte'],
+      ['2019-09-04', 'Pinalitan ulit ang rain gauge', 'John Geliberte', 'David Guevarra']
+    ]
+
+    initial_data.forEach(element => {
+      let temp_container = this.state.logs_container
+      temp_container[element[0]] = element
+      this.setState({logs_container: temp_container})
+    });
+  }
 
   addLog(day) {
     this.setState({selected_date: day})
@@ -36,9 +55,6 @@ export default class MaintenanceLogsScreen extends Component {
     let temp_container = this.state.logs_container
     temp_container[date] = temp
     this.setState({logs_container: temp_container})
-    let temp_marked_dates = this.state.marked_dates;
-    temp_marked_dates.push({date: {date, marked: true}})
-    this.setState({marked_dates: temp_marked_dates});
     ToastAndroid.show("Successfully added a new log!.", ToastAndroid.LONG);
   }
 
@@ -55,8 +71,12 @@ export default class MaintenanceLogsScreen extends Component {
 
       ];
     } else {
-      console.log(this.state.logs_container);
-      let {toma, remarks, incharge, updater} = this.state
+      let temp_data = this.state.logs_container
+      let data = temp_data[day]
+      let toma = data[0]
+      let remarks = data[1]
+      let incharge = data[2]
+      let updater = data[3]
       view = [
         <View>
           <View style={ContainerStyle.hr}></View>

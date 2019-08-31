@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert, ToastAndroid } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
@@ -73,8 +73,8 @@ export default class MoMsScreen extends Component {
       'Are you sure you want to raise this as an alert?',
       [
         { text: 'Cancel', onPress: () => { console.log("Cancelled") } },
-        { text: 'Alert 2', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.LONG) },
-        { text: 'Alert 3', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.LONG) }
+        { text: 'Significant Movement', onPress: () => ToastAndroid.show("Alert 2 Raised!", ToastAndroid.LONG) },
+        { text: 'Critical Movement', onPress: () => ToastAndroid.show("Alert 3 Raised!", ToastAndroid.LONG) }
       ]
     )
   }
@@ -197,8 +197,8 @@ export default class MoMsScreen extends Component {
             />
           </View>
           <View>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click row to modify.</Text>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Hold press row to raise as alert.</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Tap row to modify.</Text>
+            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Tap and hold row to raise as alert.</Text>
           </View>
           <View>
             <View style={ContainerStyle.input_label_combo}>
