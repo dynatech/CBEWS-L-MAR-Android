@@ -20,19 +20,13 @@ export default class IncidentReportsScreen extends Component {
       selected_date: "",
       marked_dates: {
         '2019-09-01': {selected: true},
-        '2019-09-02': {selected: true},
-        '2019-09-03': {selected: true},
-        '2019-09-04': {selected: true}
       }
     };
   }
 
   componentDidMount() {
     let initial_data = [
-      ['2019-09-01', 'Lumubog yung data logger', 'John Geliberte'],
-      ['2019-09-02', 'May bara ang rain gauge', 'David Guevarra'],
-      ['2019-09-03', 'Nalowbat ang battery ng data logger', 'David Guevarra'],
-      ['2019-09-04', 'Natangal ang bakod sa sensor', 'John Geliberte']
+      ['2019-09-01', 'Nasira ang bakod ng sensor', 'Juan Dela Cruz'],
     ]
 
     initial_data.forEach(element => {
@@ -44,6 +38,7 @@ export default class IncidentReportsScreen extends Component {
 
   addLog(day) {
     this.setState({selected_date: day})
+    this.setState({datetime: day});
     this.renderModification();
     this.renderLogView(day);
   }
@@ -100,26 +95,12 @@ export default class IncidentReportsScreen extends Component {
       <View>
         <View style={ContainerStyle.hr}></View>
         <View style={ContainerStyle.input_label_combo}>
-          <Text style={LabelStyle.medium_label}>Date of incident</Text>
-          <DatePicker
-                customStyles={{ dateInput: { borderWidth: 0, } }}
-                style={[InputStyle.medium, { width: '94%' }, InputStyle.default, InputStyle.black]}
-                date={this.state.datetime}
-                mode="datetime"
-                placeholder="Pick date and time"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                onDateChange={(date) => { this.refreshDatePicker(date) }}
-              />
-        </View>
-        <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Incident Description/Narrative</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => this.setState({ incident: text })}></TextInput>
         </View>
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Reporter</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => this.setState({ reporter: text })}></TextInput>
         </View>
         <View style={{ paddingTop: '10%', alignItems: 'center' }}>
           <TouchableOpacity style={ButtonStyle.medium} onPress={()=> {this.saveLog()}}>

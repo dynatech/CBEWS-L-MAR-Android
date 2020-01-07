@@ -23,7 +23,8 @@ export default class MaintenanceLogsScreen extends Component {
         '2019-09-02': {selected: true},
         '2019-09-03': {selected: true},
         '2019-09-04': {selected: true}
-      }
+      },
+      calendar: []
     };
   }
 
@@ -40,6 +41,13 @@ export default class MaintenanceLogsScreen extends Component {
       temp_container[element[0]] = element
       this.setState({logs_container: temp_container})
     });
+    this.renderCalendar();
+  }
+
+  renderCalendar() {
+    this.setState({calendar: []})
+    this.setState({calendar: [<Calendar markedDates={this.state.marked_dates} onDayPress={(day) => { this.addLog(day.dateString) }}></Calendar>]})
+    console.log(this.state.marked_dates)
   }
 
   addLog(day) {
@@ -56,13 +64,18 @@ export default class MaintenanceLogsScreen extends Component {
     temp_container[date] = temp
     this.setState({logs_container: temp_container})
     ToastAndroid.show("Successfully added a new log!.", ToastAndroid.LONG);
+
+    let temp_marked_dates = this.state.marked_dates;
+    temp_marked_dates[date] = {selected: true}
+    this.setState({marked_dates: temp_marked_dates});
+    this.renderCalendar();
   }
 
   renderLogView(day) {
     let view = [];
     if (this.state.logs_container[day] == null || this.state.logs_container[day] == undefined) {
       view = [
-        <View>
+        <View>  
           <View style={ContainerStyle.hr}></View>
           <View style={ContainerStyle.content}>
             <Text style={LabelStyle.medium_label}>No activity recorded.</Text>
@@ -126,7 +139,7 @@ export default class MaintenanceLogsScreen extends Component {
     return (
       <ScrollView>
         <View style={ContainerStyle.content}>
-          <Calendar markedDates={this.state.marked_dates} onDayPress={(day) => { this.addLog(day.dateString) }}></Calendar>
+          {this.state.calendar}
           <View>
             <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Click date to add log.</Text>
           </View>

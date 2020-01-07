@@ -39,7 +39,7 @@ export default class TemplatesScreen extends Component {
               selectedValue={this.state.template_key}
               style={{ height: 50, width: '100%' }}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({ template: itemValue })
+                this.setState({ template_key: itemValue })
               }>
               <Picker.Item label="Invitation for events" value="invitations" />
               <Picker.Item label="Ground measurement reminders" value="gndmeas_reminder" />

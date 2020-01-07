@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert, ToastAndroid } from 'react-native';
-import { ImageStyle } from '../../../../styles/image_style'
+import DatePicker from 'react-native-datepicker';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
@@ -177,19 +177,30 @@ export default class ODMonitoringScreen extends Component {
           <View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Date and Time</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+              <DatePicker
+                customStyles={{ dateInput: { borderWidth: 0, } }}
+                style={[InputStyle.medium, { width: '94%'}, InputStyle.default, InputStyle.black]}
+                date={this.state.datetime}
+                mode="datetime"
+                placeholder="Pick date and time"
+                showIcon={false}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                onDateChange={(date) => { this.setState({ datetime: date }) }}
+              />
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Reporter</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.reporter} onChangeText={text => this.setState({ reporter: text })}></TextInput>
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Reason for monitoring request</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.rfmr} onChangeText={text => this.setState({ rfmr: text })}></TextInput>
             </View>
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Description</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={this.state.description} onChangeText={text => this.setState({ description: text })}></TextInput>
             </View>
             {this.state.command_view}
           </View>
