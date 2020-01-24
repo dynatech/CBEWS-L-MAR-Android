@@ -1,31 +1,66 @@
-import React, { Component } from 'react';
+import React, { useState, createContext, Fragment } from 'react';
 import { Image, ImageBackground, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { ImageStyle } from '../../styles/image_style'
 import { ContainerStyle } from '../../styles/container_style';
 import { InputStyle } from '../../styles/input_style';
 import { LabelStyle } from '../../styles/label_style';
 import { ButtonStyle } from '../../styles/button_style';
+import Storage from '../../reducers/Storage';
 
-export default class LoginScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      password: ""
-    };
+function LoginScreen(props) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigator = props.navigation;
+
+  Storage.getItem("UserCredentials").then(response => {
+    if (response != null) {
+      navigator.navigate('Dashboard');
+    }
+  })
+
+  const usernameChange = (text) => {
+    setUsername(text)
   }
 
-  validateCredentials() {
-    if (this.state.username == "" || this.state.password == "") {
+  const passwordChange = (text) => {
+    setPassword(text)
+  }
+
+  const validateCredentials = () => {
+    if (username == "" || password == "") {
       ToastAndroid.show("Login failed, invalid username or password.", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show("Login successful!", ToastAndroid.SHORT);
-      this.props.navigation.navigate('Dashboard');
+
+      fetch('http://192.168.150.28:5000/api/accounts/signin', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "username": username,
+          "password": password
+        }),
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status != false) {
+            Storage.setItem("UserCredentials", responseJson.user_data)
+            ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+            navigator.navigate('Dashboard');
+          } else {
+            ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        }
+      );
     }
   }
 
-  render() {
-    return (
+  return (
+    <Fragment>
       <ImageBackground style={ImageStyle.background} source={require('../../assets/login_screen.png')} blurRadius={1}>
         <View style={ContainerStyle.content}>
           <View style={ContainerStyle.seals}>
@@ -36,16 +71,22 @@ export default class LoginScreen extends Component {
           </View>
           <View style={ContainerStyle.login_content}>
             <Text style={[LabelStyle.large_label, LabelStyle.default, InputStyle.white]}>Community Based Early Warning Information for Landslides</Text>
-            <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" onChangeText={text => this.setState({ username: text })}></TextInput>
-            <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} secureTextEntry={true} placeholder="Password" placeholderTextColor="#fff" onChangeText={text => this.setState({ password: text })}></TextInput>
-            <TouchableOpacity style={ButtonStyle.large} onPress={() => this.validateCredentials()}>
+            <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} placeholder="Username" placeholderTextColor="#fff" onChangeText={text => { usernameChange(text) }}></TextInput>
+            <TextInput style={[InputStyle.large, InputStyle.default, InputStyle.white]} secureTextEntry={true} placeholder="Password" placeholderTextColor="#fff" onChangeText={text => { passwordChange(text) }}></TextInput>
+            <TouchableOpacity style={ButtonStyle.large} onPress={() => validateCredentials()}>
               <Text style={ButtonStyle.large_text}>Sign in</Text>
             </TouchableOpacity>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Forgot password?</Text>
-            <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Create account</Text>
+            <Text style={[LabelStyle.medium_label, LabelStyle.brand]} onPress={() => { 
+              navigator.navigate('ForgotPassword'); 
+          }}>Forgot password?</Text>
+            <Text style={[LabelStyle.medium_label, LabelStyle.brand]} onPress={() => { 
+              navigator.navigate('QuickRegistration'); 
+          }}>Create account</Text>
           </View>
         </View>
       </ImageBackground>
-    );
-  }
+    </Fragment>
+  )
 }
+
+export default LoginScreen
