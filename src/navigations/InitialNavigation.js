@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen from '../components/layout/LoginScreen';
 import QuickRegistrationScreen from '../components/layout/QuickRegistrationScreen';
 import ForgotPasswordScreen from '../components/layout/ForgotPasswordScreen';
@@ -9,25 +10,25 @@ const InitialScreens = createStackNavigator({
     Login: {
         screen: LoginScreen,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     Dashboard: {
         screen: Landing,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     ForgotPassword: {
         screen: ForgotPasswordScreen,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     QuickRegistration: {
         screen: QuickRegistrationScreen,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     }
 });

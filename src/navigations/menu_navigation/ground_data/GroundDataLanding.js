@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import SurficialMarkersScreen from '../../../components/layout/menu/ground_data/SurficialMarkersScreen';
 import MoMsScreen from '../../../components/layout/menu/ground_data/MoMsScreen';
 import ODMonitoringScreen from '../../../components/layout/menu/ground_data/ODMonitoringScreen';

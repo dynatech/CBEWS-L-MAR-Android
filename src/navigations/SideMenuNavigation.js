@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, TouchableOpacity, Text, Alert } from 'react-native';
-import { createAppContainer, createDrawerNavigator, DrawerItems } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import DashboardNavigation from './DashboardNavigation'
 import AboutUsScreen from '../components/layout/AboutUsScreen'
 import ContactUsScreen from '../components/layout/ContactUsScreen'

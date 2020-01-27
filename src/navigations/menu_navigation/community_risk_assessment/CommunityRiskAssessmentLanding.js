@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import CapacityAndVulnerabilityScreen from '../../../components/layout/menu/community_risk_assessment/CapacityAndVulnerabilityScreen';
 import CommunityRiskAssessmentScreen from '../../../components/layout/menu/community_risk_assessment/CommunityRiskAssessmentScreen';
 import HazardMapScreen from '../../../components/layout/menu/community_risk_assessment/HazardMapScreen';
@@ -43,7 +44,7 @@ const CommunityRiskAssessment = createMaterialTopTabNavigator({
 });
 
 CommunityRiskAssessment.navigationOptions = {
-    header: null,
+    headerShown: false,
 };
 
 export default createAppContainer(CommunityRiskAssessment);

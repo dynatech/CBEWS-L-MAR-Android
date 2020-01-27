@@ -1,4 +1,5 @@
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from 'react-navigation-stack';
 import CommunityRiskAssessment from './menu_navigation/community_risk_assessment/CommunityRiskAssessmentLanding';
 import AlertGeneration from './menu_navigation/alert_generation/AlertGenerationLanding';
 import DataAnalysis from './menu_navigation/data_analysis/DataAnalysisLanding';
@@ -13,49 +14,49 @@ const DashboardNavigation = createStackNavigator({
     Dashboard: {
         screen: DashboardScreen,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     CommunityRiskAssessment: {
         screen: CommunityRiskAssessment,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     AlertGeneration: {
         screen: AlertGeneration,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     DataAnalysis: {
         screen: DataAnalysis,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     GroundData: {
         screen: GroundData,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     SensorData: {
         screen: SensorData,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     Maintenance: {
         screen: Maintenance,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     Events: {
         screen: Events,
         navigationOptions: {
-            header: null
+            headerShown: false
         }
     },
     DataSync: {

@@ -3,7 +3,7 @@ import { ScrollView, Text, TextInput, ToastAndroid, TouchableOpacity, View } fro
 import { ContainerStyle } from '../../styles/container_style';
 import { InputStyle } from '../../styles/input_style';
 import { ButtonStyle } from '../../styles/button_style';
-import { withNavigation } from 'react-navigation';
+import AppConfig from '../../reducers/AppConfig';
 
 function QuickRegistrationScreen(props) {
   const [username, setUsername] = useState("");
@@ -53,30 +53,35 @@ function QuickRegistrationScreen(props) {
       }
       ToastAndroid.show(err, ToastAndroid.LONG);
     } else {
-      fetch('http://192.168.150.28:5000/api/accounts/signup', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "username": username,
-          "password": password,
-          "mobile_number": mobile_number
-        }),
-      }).then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson.status == false) {
-            ToastAndroid.show("Registration failed, please contact administrator for further assistance.", ToastAndroid.LONG);
-          } else {
-            ToastAndroid.show("Registration complete, please wait for the confirmation.", ToastAndroid.LONG);
-            props.navigation.navigate("Login")
+
+      AppConfig.cnf().then(config => {
+        fetch('http://192.168.150.28:5000/api/accounts/signup', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "username": username,
+            "password": password,
+            "mobile_number": mobile_number,
+            "site_id": config.site_id,
+            "site_code": config.site_code
+          }),
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            if (responseJson.status == false) {
+              ToastAndroid.show("Registration failed, please contact administrator for further assistance.", ToastAndroid.LONG);
+            } else {
+              ToastAndroid.show("Registration complete, please wait for the confirmation.", ToastAndroid.LONG);
+              props.navigation.navigate("Login")
+            }
+          })
+          .catch((error) => {
+            console.error(error);
           }
-        })
-        .catch((error) => {
-          console.error(error);
-        }
-      );
+        );
+       });
     }
   }
 

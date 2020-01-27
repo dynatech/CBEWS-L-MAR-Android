@@ -1,5 +1,6 @@
 import React, { Component, useState, Fragment } from 'react';
 import { Image, ImageBackground, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import AppConfig from '../../reducers/AppConfig';
 import { ImageStyle } from '../../styles/image_style'
 import { ContainerStyle } from '../../styles/container_style';
 import { InputStyle } from '../../styles/input_style';

@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import TemplatesScreen from '../../../components/layout/menu/events/TemplatesScreen'
 import TemplateSettingsScreen from '../../../components/layout/menu/events/TemplateSettingsScreen'
 

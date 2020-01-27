@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import CurrentAlertScreen from '../../../components/layout/menu/alert_generation/CurrentAlertScreen';
 import AlertValidationScreen from '../../../components/layout/menu/alert_generation/AlertValidationScreen';
 

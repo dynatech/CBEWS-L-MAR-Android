@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import {createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import MaintenanceLogsScreen from '../../../components/layout/menu/maintenance/MaintenanceLogsScreen';
 import IncidentReportsScreen from '../../../components/layout/menu/maintenance/IncidentReportsScreen';
 

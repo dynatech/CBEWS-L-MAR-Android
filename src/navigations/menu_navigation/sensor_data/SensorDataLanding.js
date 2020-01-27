@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import RainGaugeSensorScreen from '../../../components/layout/menu/sensor_data/RainGaugeSensorScreen';
 import SubsurfaceSensorScreen from '../../../components/layout/menu/sensor_data/SubsurfaceSensorScreen';
 import EarthquakeSensorScreen from '../../../components/layout/menu/sensor_data/EarthquakeSensorScreen';

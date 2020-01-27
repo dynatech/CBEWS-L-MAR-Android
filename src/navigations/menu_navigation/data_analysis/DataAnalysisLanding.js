@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import RainfallPlotScreen from '../../../components/layout/menu/data_analysis/RainfallPlotScreen';
 import SubsurfacePlotScreen from '../../../components/layout/menu/data_analysis/SubsurfacePlotScreen';
 import SurficialPlotScreen from '../../../components/layout/menu/data_analysis/SurficialPlotScreen';
