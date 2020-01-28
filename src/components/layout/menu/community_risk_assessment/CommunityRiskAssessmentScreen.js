@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native';
 import { ImageStyle } from '../../../../styles/image_style'
 import { ContainerStyle } from '../../../../styles/container_style'
@@ -34,31 +34,33 @@ export default class CommunityRiskAssessmentScreen extends Component {
 
   render() {
     return (
-      <View style={ContainerStyle.content}>
-        <Text style={[LabelStyle.large_label, LabelStyle.brand]}>Community Risk Assessment</Text>
-        <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Reports and Documents</Text>
-        <List containerStyle={{ marginBottom: 20 , flex: 0.9}}>
-          {
-            this.state.list.map((l) => (
-              <TouchableOpacity onPress={()=> {
-                ToastAndroid.show("Download success!.", ToastAndroid.SHORT);
-              }}>
-                <ListItem
-                  key={l.name}
-                  title={l.name}
-                  subtitle={l.subtitle}
-                  hideChevron={true}
-                />
-              </TouchableOpacity>
-            ))
-          }
-        </List>
-        <View style={{ paddingTop: '10%', alignItems: 'center' }}>
-          <TouchableOpacity style={ButtonStyle.medium}>
-            <Text style={ButtonStyle.large_text}>Upload file</Text>
-          </TouchableOpacity>
+      <Fragment>
+        <View style={ContainerStyle.content}>
+          <Text style={[LabelStyle.large_label, LabelStyle.brand]}>Community Risk Assessment</Text>
+          <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Reports and Documents</Text>
+          <List containerStyle={{ marginBottom: 20, flex: 0.9 }}>
+            {
+              this.state.list.map((l) => (
+                <TouchableOpacity key={l.name} onPress={() => {
+                  ToastAndroid.show("Download success!.", ToastAndroid.SHORT);
+                }}>
+                  <ListItem
+                    key={l.name}
+                    title={l.name}
+                    subtitle={l.subtitle}
+                    hideChevron={true}
+                  />
+                </TouchableOpacity>
+              ))
+            }
+          </List>
+          <View style={{ paddingTop: '10%', alignItems: 'center' }}>
+            <TouchableOpacity style={ButtonStyle.medium}>
+              <Text style={ButtonStyle.large_text}>Upload file</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </Fragment>
     );
   }
 }

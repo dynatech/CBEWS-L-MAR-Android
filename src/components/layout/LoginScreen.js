@@ -32,7 +32,7 @@ function LoginScreen(props) {
       ToastAndroid.show("Login failed, invalid username or password.", ToastAndroid.SHORT);
     } else {
 
-      fetch('http://192.168.150.28:5000/api/accounts/signin', {
+      fetch('http://192.168.150.251:5000/api/accounts/signin', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

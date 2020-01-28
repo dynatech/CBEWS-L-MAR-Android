@@ -55,7 +55,7 @@ function QuickRegistrationScreen(props) {
     } else {
 
       AppConfig.cnf().then(config => {
-        fetch('http://192.168.150.28:5000/api/accounts/signup', {
+        fetch('http://192.168.150.251:5000/api/accounts/signup', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
