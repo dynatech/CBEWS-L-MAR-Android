@@ -30,6 +30,8 @@ target 'CBEWS_L_MAR' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'CBEWS_L_MARTests' do
     inherit! :search_paths
     # Pods for testing
