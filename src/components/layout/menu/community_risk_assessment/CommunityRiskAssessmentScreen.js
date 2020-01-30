@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native';
-import { ImageStyle } from '../../../../styles/image_style'
+import { View, Text, TouchableOpacity, ToastAndroid, ScrollView } from 'react-native';
 import { ContainerStyle } from '../../../../styles/container_style'
-import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
 import { List, ListItem } from 'react-native-elements'
@@ -46,18 +44,19 @@ function CommunityRiskAssessmentScreen() {
         console.log(error);
       }
       );
+    resetState()
   }
 
-  const downloadFile = (full_path,file_name) => {
+  const downloadFile = (full_path, file_name) => {
     const HTTP_URL = full_path.replace('/var/www/html', '');
-    let dirs = RNFetchBlob.fs.dirs
     RNFetchBlob.config({
-      path : dirs.DocumentDir+ '/'+ file_name,
-      fileCache : true,
+      fileCache: true,
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
+        path: RNFetchBlob.fs.dirs.DownloadDir + "/" + file_name,
         description: 'File downloaded by download manager.'
+        ,
       }
     })
       .fetch('GET', `${AppConfig.HOST_DIR}${HTTP_URL}`)
@@ -84,6 +83,14 @@ function CommunityRiskAssessmentScreen() {
     });
   }
 
+  const resetState = () => {
+    setFilepath("");
+    setFiletype("");
+    setFilesize("");
+    setFilename("None");
+    setConfirmUpload(false);
+  }
+
   const comfirmUpload = () => {
     var uploadBegin = (response) => {
       var jobId = response.jobId;
@@ -99,7 +106,7 @@ function CommunityRiskAssessmentScreen() {
       toUrl: `${AppConfig.HOSTNAME}/api/cra/community_risk_assessment/upload`,
       files: [{
         name: 'resource',
-        filename:filename,
+        filename: filename,
         filepath: filepath,
         filetype: filetype,
         filesize: filesize
@@ -114,14 +121,14 @@ function CommunityRiskAssessmentScreen() {
       begin: uploadBegin,
       progress: uploadProgress
     }).promise.then((response) => {
-      setTimeout(()=> {
+      setTimeout(() => {
         if (response.statusCode == 200) {
           ToastAndroid.show('File successfully uploaded!', ToastAndroid.LONG);
           initList()
         } else {
           console.log('SERVER ERROR');
         }
-      }, 2000)
+      }, 1000)
     })
       .catch((err) => {
         if (err.description === "cancelled") {
@@ -136,22 +143,24 @@ function CommunityRiskAssessmentScreen() {
       <View style={ContainerStyle.content}>
         <Text style={[LabelStyle.large_label, LabelStyle.brand]}>Community Risk Assessment</Text>
         <Text style={[LabelStyle.small_label, LabelStyle.brand]}>Reports and Documents</Text>
-        <List containerStyle={{ backgroundColor: 'transparent', marginBottom: 20, flex: 0.9 }}>
-          {
-            list.map((l) => (
-              <TouchableOpacity key={l.file_path + l.filename} onPress={() => {
-                downloadFile(l.file_path+l.filename, l.filename);
-              }}>
-                <ListItem
-                  key={l.filename}
-                  title={l.filename}
-                  subtitle={l.file_path}
-                  hideChevron={true}
-                />
-              </TouchableOpacity>
-            ))
-          }
-        </List>
+        <ScrollView>
+          <List containerStyle={{ backgroundColor: 'transparent', marginBottom: 20, flex: 0.9 }}>
+            {
+              list.map((l) => (
+                <TouchableOpacity key={l.file_path + l.filename} onPress={() => {
+                  downloadFile(l.file_path + l.filename, l.filename);
+                }}>
+                  <ListItem
+                    key={l.filename}
+                    title={l.filename}
+                    subtitle={l.file_type.toUpperCase()+ " FILE"}
+                    hideChevron={true}
+                  />
+                </TouchableOpacity>
+              ))
+            }
+          </List>
+        </ScrollView>
         <View style={{ paddingTop: '10%', alignItems: 'center' }}>
           <Text style={[LabelStyle.medium_label, LabelStyle.brand]}>Selected file: {filename}</Text>
           {confirmUpload ?
