@@ -6,6 +6,7 @@ import { InputStyle } from '../../styles/input_style';
 import { LabelStyle } from '../../styles/label_style';
 import { ButtonStyle } from '../../styles/button_style';
 import Storage from '../../reducers/Storage';
+import AppConfig from '../../reducers/AppConfig';
 
 function LoginScreen(props) {
   const [username, setUsername] = useState("");
@@ -31,8 +32,7 @@ function LoginScreen(props) {
     if (username == "" || password == "") {
       ToastAndroid.show("Login failed, invalid username or password.", ToastAndroid.SHORT);
     } else {
-
-      fetch('http://192.168.150.251:5000/api/accounts/signin', {
+      fetch(`${AppConfig.HOSTNAME}/api/accounts/signin`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

@@ -35,9 +35,9 @@ function CommunityRiskAssessmentScreen() {
     }).then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.status == true) {
-          setList(responseJson.data);
+          setList(responseJson.data); 
         } else {
-          setList([{ filename: 'NO FILES AVAILABLE', filepath: 'N/A' }])
+          setList([{"file_path": "", "file_type": "NA", "filename": "NO AVAILABLE DATA"}])
         }
       })
       .catch((error) => {
@@ -138,6 +138,7 @@ function CommunityRiskAssessmentScreen() {
       });
   }
 
+  console.log("150", list)
   return (
     <Fragment>
       <View style={ContainerStyle.content}>
