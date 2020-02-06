@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput, ToastAndroid } from 'react-native';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert, ToastAndroid } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
@@ -21,10 +21,13 @@ function SurficialMarkersScreen() {
 
   const [markerFields, setMarkerFields] = useState([]);
   const [markerValue, setMarkerValue] = useState({});
+  const markerValueRef = useRef();
+  const markerValueTsRef = useRef();
+
   const [dtHeader, setDtHeader] = useState([]);
   const [dtBody, setDtBody] = useState([]);
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pages, setPages] = useState([]);
 
   const [isModify, setIsModify] = useState(false);
@@ -33,7 +36,7 @@ function SurficialMarkersScreen() {
     initSurficialMarkers();
   }, [])
 
-  const initSurficialMarkers = () => {
+  const initSurficialMarkers = (dt_row = 0) => {
     fetch(`${AppConfig.HOSTNAME}/api/ground_data/surficial_markers/fetch/29`, {
       method: 'GET',
       headers: {
@@ -41,14 +44,12 @@ function SurficialMarkersScreen() {
         'Content-Type': 'application/json',
       }
     }).then((response) => response.json())
-      .then((responseJson) => {
-        let temp_dtBody = [];
+      .then((responseJson) => {  
         let temp_dtHeader = [];
         let temp_pages = parseInt(responseJson.data.length / 10)
-        let counter = 0;
         responseJson.markers.forEach(row_marker => {
           temp_dtHeader.push(
-            <DataTable.Title style={{ width: 150 }}>{row_marker[0].toUpperCase()}</DataTable.Title>
+            <DataTable.Title key={row_marker[0]} style={{ width: 150 }}>{row_marker[0].toUpperCase()}</DataTable.Title>
           );
         });
         
@@ -60,34 +61,39 @@ function SurficialMarkersScreen() {
           <DataTable.Title key={"weather"} style={{ width: 150 }}>Date</DataTable.Title>,
           <DataTable.Title key={"nagsukat"} style={{ width: 150 }}>Weather</DataTable.Title>)
 
-        responseJson.data.forEach(row => {
-          let obj_data = Object.values(row)
-          let actual_data = Object.values(obj_data[0])
-          let temp_data_row = []
-
-          actual_data.forEach(element => {
-            temp_data_row.push(<DataTable.Cell key={element} style={{ width: 150 }}>{element}</DataTable.Cell>)
-          });
-
-          temp_dtBody.push(
-            <DataTable.Row onPress={() => {
-              selectCell(obj_data[0])
-            }}>
-              {temp_data_row}
-            </DataTable.Row>
-          );
-        });
-
         setDtHeader(temp_dtHeader);
         setSurficial(responseJson.data);
         setPages(temp_pages);
-        setDtBody(temp_dtBody)
         initializeFields(responseJson.markers);
+        constructDtBody(responseJson.data, dt_row)
       })
       .catch((error) => {
         console.log(error)
       }
       );
+  }
+
+  const constructDtBody = (data, dt_row) => {
+    let temp_dtBody = [];
+    let surficial_row = data.slice(dt_row, dt_row+10);
+    surficial_row.forEach(row => {
+      let obj_data = Object.values(row)
+      let actual_data = Object.values(obj_data[0])
+      let temp_data_row = []
+
+      actual_data.forEach(element => {
+        temp_data_row.push(<DataTable.Cell key={element} style={{ width: 150 }}>{element}</DataTable.Cell>)
+      });
+
+      temp_dtBody.push(
+        <DataTable.Row onPress={() => {
+          selectCell(obj_data[0])
+        }}>
+          {temp_data_row}
+        </DataTable.Row>
+      );
+    });
+    setDtBody(temp_dtBody)
   }
 
   const addNewMarker = (marker) => {
@@ -97,12 +103,12 @@ function SurficialMarkersScreen() {
   }
 
   const onChangeMarkerValue = (value, marker) => {
-    let value_change = markerValue
+    let value_change = markerValue;
     value_change[marker] = value;
-    setMarkerValue(value_change)
+    setMarkerValue(value_change);
   }
 
-  const initializeFields = (markers_data) => {
+  const initializeFields = (markers_data) => {    
     let temp_marker_field = [];
     markers_data.forEach((element) => {
       let marker = element[0];
@@ -116,8 +122,21 @@ function SurficialMarkersScreen() {
     setMarkerFields(temp_marker_field)
   }
 
+  const constructFields = (key, value) => {
+    let temp_marker_field = [];
+    key.forEach((element) => {
+      temp_marker_field.push(
+        <View style={ContainerStyle.input_label_combo}>
+          <Text style={LabelStyle.medium_label}>Marker: {element}</Text>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => { onChangeMarkerValue(text, element) }}>{value[element]}</TextInput>
+        </View>)
+    })
+    setMarkerFields(temp_marker_field)
+  }
+
   const changePage = (raw_page) => {
-    setPage(raw_page)
+    setPage(raw_page);
+    constructDyBody(surficial, raw_page * 10);
   }
 
   const resetState = () => {
@@ -140,27 +159,21 @@ function SurficialMarkersScreen() {
   }
 
   const selectCell = (data) => {
-    console.log(data)
+    setIsModify(true);
+    setDatetime(moment(data.ts).format('YYYY-MM-DD HH:mm:ss'));
+    setWeather(data.weather);
+    setObserver(data.observer);
+    markerValueTsRef.current = data.ts;
+    delete data.weather;
+    delete data.observer;
+    delete data.ts;
+    setMarkerValue(data);``
+    markerValueRef.current = data;
+    constructFields(markers, data);
   }
 
   const addSurficialMeasurement = () => {
-    let temp_row = []
-    let temp_data = this.state
-    temp_row.push(this.state.datatable_row)
-    temp_row.push(
-      <DataTable.Row onPress={() => {
-        this.selectCell(temp_data)
-      }} onLongPress={() => { this.validateMoMs(temp_data) }}>
-        <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
-        <DataTable.Cell style={{ width: 150 }}>{a}</DataTable.Cell>
-        <DataTable.Cell style={{ width: 200 }}>{b}</DataTable.Cell>
-        <DataTable.Cell style={{ width: 150 }}>{c}</DataTable.Cell>
-        <DataTable.Cell style={{ width: 150 }}>{weather}</DataTable.Cell>
-        <DataTable.Cell style={{ width: 150 }}>{nagsukat}</DataTable.Cell>
-      </DataTable.Row>
-    )
-    this.setState({ datatable_row: temp_row })
-    ToastAndroid.show("Successfully added new Surficial Measurement!", ToastAndroid.LONG)
+
   }
 
   const addVisible = () => {
@@ -175,19 +188,43 @@ function SurficialMarkersScreen() {
 
   }
 
-
   const cancelModification = () => {
-    this.addVisible()
-    this.resetState()
+    console.log(markerValue);
   }
 
-  const updateSurficialMeasurement = (data) => {
+  const updateSurficialMeasurement = () => {
     Alert.alert(
       'Notice',
       'Are you sure you want to update this entry?',
       [
         { text: 'No', onPress: () => { console.log("Cancelled") }, style: 'cancel' },
-        { text: 'Yes', onPress: () => ToastAndroid.show("Data up to date!", ToastAndroid.LONG) }
+        { text: 'Yes', onPress: () => {
+          let new_marker_values = markerValueRef.current;
+          new_marker_values = {...new_marker_values, ...markerValue};
+          let request = {
+            "site_id": 29,
+            "ref_ts": markerValueTsRef.current,
+            "new_ts": datetime,
+            "weather": weather,
+            "observer": observer,
+            "marker_values": new_marker_values
+          }
+          fetch(`${AppConfig.HOSTNAME}/api/ground_data/surficial_markers/modify`, {
+            method: 'PATCH',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+          }).then((response) => response.json())
+            .then((responseJson) => {
+              console.log(responseJson);
+            })
+            .catch((error) => {
+              console.log(error)
+            }
+          );
+        }}
       ]
     )
   }
@@ -220,7 +257,7 @@ function SurficialMarkersScreen() {
               page={page}
               numberOfPages={pages}
               onPageChange={(page) => { changePage(page) }}
-              label={`Page ${page} of ${pages}`}
+              label={`Page ${page} of ${pages-1}`}
             />
           </View>
           <View>
@@ -239,13 +276,13 @@ function SurficialMarkersScreen() {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
-                onDateChange={(date) => { setDatetime(date) }}
+                onDateChange={(date) => { setDatetime(`${date}:00`) }}
               />
             </View>
 
             <View style={ContainerStyle.input_label_combo}>
               <Text style={LabelStyle.medium_label}>Weather</Text>
-              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={weather} onChangeText={text => { console.log(markerValue); setWeather(text) }}></TextInput>
+              <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={weather} onChangeText={text => { setWeather(text) }}></TextInput>
             </View>
 
             <View style={ContainerStyle.input_label_combo}>
