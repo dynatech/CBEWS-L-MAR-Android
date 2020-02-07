@@ -140,14 +140,18 @@ function SurficialMarkersScreen() {
   }
 
   const resetState = () => {
-    this.setState({
-      datetime: "",
-      a: "",
-      b: "",
-      c: "",
-      weather: "",
-      nagsukat: ""
-    })
+    setDatetime(moment().format('YYYY-MM-DD HH:mm:ss'))
+    setWeather("")
+    setObserver("")
+    setMarkers([])
+    setSurficial([])
+    setMarkerFields([])
+    setMarkerValue({})
+    markerValueRef.current = ""
+    markerValueTsRef.current = ""
+    setPage(0)
+    setPages([])
+    setIsModify(false)
   }
 
   const sendMeasurement = (data) => {
@@ -159,17 +163,18 @@ function SurficialMarkersScreen() {
   }
 
   const selectCell = (data) => {
+    let temp_data = {...data}
     setIsModify(true);
     setDatetime(moment(data.ts).format('YYYY-MM-DD HH:mm:ss'));
     setWeather(data.weather);
     setObserver(data.observer);
     markerValueTsRef.current = data.ts;
-    delete data.weather;
-    delete data.observer;
-    delete data.ts;
-    setMarkerValue(data);``
-    markerValueRef.current = data;
-    constructFields(markers, data);
+    delete temp_data.weather;
+    delete temp_data.observer;
+    delete temp_data.ts;
+    setMarkerValue(temp_data);
+    markerValueRef.current = temp_data;
+    constructFields(markers, temp_data);
   }
 
   const addSurficialMeasurement = () => {
@@ -218,7 +223,13 @@ function SurficialMarkersScreen() {
             body: JSON.stringify(request),
           }).then((response) => response.json())
             .then((responseJson) => {
-              console.log(responseJson);
+              if (responseJson.status == true) {
+                ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+                initSurficialMarkers();
+                resetState();
+              } else {
+                ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+              }
             })
             .catch((error) => {
               console.log(error)
