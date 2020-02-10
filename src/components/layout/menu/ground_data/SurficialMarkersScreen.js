@@ -13,8 +13,8 @@ import Storage from '../../../../reducers/Storage';
 
 function SurficialMarkersScreen() {
   const [datetime, setDatetime] = useState(moment().format('YYYY-MM-DD HH:mm:ss'));
-  const [weather, setWeather] = useState();
-  const [observer, setObserver] = useState();
+  const [weather, setWeather] = useState("");
+  const [observer, setObserver] = useState("");
 
   const [markers, setMarkers] = useState([]);
   const [surficial, setSurficial] = useState([]);
@@ -49,7 +49,7 @@ function SurficialMarkersScreen() {
         let temp_pages = parseInt(responseJson.data.length / 10)
         responseJson.markers.forEach(row_marker => {
           temp_dtHeader.push(
-            <DataTable.Title key={row_marker[0]} style={{ width: 150 }}>{row_marker[0].toUpperCase()}</DataTable.Title>
+            <DataTable.Title key={row_marker[0]} style={{ width: 150 }}>{row_marker[1].toUpperCase()}</DataTable.Title>
           );
         });
         
@@ -60,7 +60,6 @@ function SurficialMarkersScreen() {
         temp_dtHeader.push(<DataTable.Title key={"date"} style={{ width: 150 }}>Nagsukat</DataTable.Title>,
           <DataTable.Title key={"weather"} style={{ width: 150 }}>Date</DataTable.Title>,
           <DataTable.Title key={"nagsukat"} style={{ width: 150 }}>Weather</DataTable.Title>)
-
         setDtHeader(temp_dtHeader);
         setSurficial(responseJson.data);
         setPages(temp_pages);
@@ -76,14 +75,16 @@ function SurficialMarkersScreen() {
   const constructDtBody = (data, dt_row) => {
     let temp_dtBody = [];
     let surficial_row = data.slice(dt_row, dt_row+10);
+    let key_counter = 0;
     surficial_row.forEach(row => {
       let obj_data = Object.values(row)
       let actual_data = Object.values(obj_data[0])
       let temp_data_row = []
 
       actual_data.forEach(element => {
-        temp_data_row.push(<DataTable.Cell key={element} style={{ width: 150 }}>{element}</DataTable.Cell>)
-      });
+        temp_data_row.push(<DataTable.Cell key={key_counter}style={{ width: 150 }}>{element}</DataTable.Cell>)
+          key_counter++;
+        });
 
       temp_dtBody.push(
         <DataTable.Row onPress={() => {
@@ -97,9 +98,13 @@ function SurficialMarkersScreen() {
   }
 
   const addNewMarker = (marker) => {
-    let temp = markers;
-    temp.push(marker);
-    setMarkers(temp);
+    console.log(markers.length)
+    console.log(markers)
+    if (markers.length == 0){
+      let temp = markers;
+      temp.push(marker);
+      setMarkers(temp);
+    }
   }
 
   const onChangeMarkerValue = (value, marker) => {
@@ -111,24 +116,24 @@ function SurficialMarkersScreen() {
   const initializeFields = (markers_data) => {    
     let temp_marker_field = [];
     markers_data.forEach((element) => {
-      let marker = element[0];
-      addNewMarker(marker)
+      let marker = element[1];
+      // addNewMarker(marker)
       temp_marker_field.push(
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Marker: {marker}</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => { onChangeMarkerValue(text, marker) }}></TextInput>
+          <TextInput key={element[0]} style={[InputStyle.medium, InputStyle.default, InputStyle.black]} keyboardType={'numeric'} onChangeText={text => { onChangeMarkerValue(text, marker) }}></TextInput>
         </View>)
     })
     setMarkerFields(temp_marker_field)
   }
 
-  const constructFields = (key, value) => {
+  const constructFields = (value) => {
     let temp_marker_field = [];
-    key.forEach((element) => {
+    Object.keys(value).forEach((element) => {
       temp_marker_field.push(
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Marker: {element}</Text>
-          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => { onChangeMarkerValue(text, element) }}>{value[element]}</TextInput>
+          <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} keyboardType={'numeric'} onChangeText={text => { onChangeMarkerValue(text, element) }}>{value[element]}</TextInput>
         </View>)
     })
     setMarkerFields(temp_marker_field)
@@ -136,7 +141,7 @@ function SurficialMarkersScreen() {
 
   const changePage = (raw_page) => {
     setPage(raw_page);
-    constructDyBody(surficial, raw_page * 10);
+    constructDtBody(surficial, raw_page * 10);
   }
 
   const resetState = () => {
@@ -152,6 +157,8 @@ function SurficialMarkersScreen() {
     setPage(0)
     setPages([])
     setIsModify(false)
+    setDtHeader([])
+    setDtBody([])
   }
 
   const sendMeasurement = (data) => {
@@ -164,6 +171,7 @@ function SurficialMarkersScreen() {
 
   const selectCell = (data) => {
     let temp_data = {...data}
+    setMarkerFields([]);
     setIsModify(true);
     setDatetime(moment(data.ts).format('YYYY-MM-DD HH:mm:ss'));
     setWeather(data.weather);
@@ -174,27 +182,56 @@ function SurficialMarkersScreen() {
     delete temp_data.ts;
     setMarkerValue(temp_data);
     markerValueRef.current = temp_data;
-    constructFields(markers, temp_data);
+    constructFields(temp_data);
   }
 
   const addSurficialMeasurement = () => {
+    if (weather.length != 0 && observer.length != 0 &&
+        Object.keys(markerValue).length != 0) {
+          Alert.alert(
+            'Notice',
+            'Are you sure you want to add a new surficial entry?',
+            [
+              { text: 'No', onPress: () => { console.log("Cancelled") }, style: 'cancel' },
+              { text: 'Yes', onPress: () => { 
+                fetch(`${AppConfig.HOSTNAME}/api/ground_data/surficial_markers/add`, {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    "ts": datetime,
+                    "weather": weather,
+                    "observer": observer,
+                    "marker_value": markerValue,
+                    "site_id": 29
+                  }),
+                }).then((response) => response.json())
+                  .then((responseJson) => {
+                    if (responseJson.status == true) {
+                      ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+                      initSurficialMarkers();
+                      resetState();
+                    } else {
+                      ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  }
+                );
 
-  }
-
-  const addVisible = () => {
-    this.setState({
-      command_view: [
-
-      ]
-    })
-  }
-
-  const modifyVisible = () => {
-
+              }}
+            ]
+          )
+    } else {
+      ToastAndroid.show("All fields are required.", ToastAndroid.LONG);
+    }
   }
 
   const cancelModification = () => {
-    console.log(markerValue);
+    resetState();
   }
 
   const updateSurficialMeasurement = () => {
@@ -246,7 +283,37 @@ function SurficialMarkersScreen() {
       'Are you sure you want to delete this entry?',
       [
         { text: 'No', onPress: () => { console.log("Cancelled") }, style: 'cancel' },
-        { text: 'Yes', onPress: () => ToastAndroid.show("Successfully deleted!", ToastAndroid.LONG) }
+        { text: 'Yes', onPress: () => {
+          fetch(`${AppConfig.HOSTNAME}/api/ground_data/surficial_markers/remove`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "datetime": datetime,
+              "weather": weather,
+              "observer": observer,
+              "marker_value": markerValue,
+              "site_id": 29
+            }),
+          }).then((response) => response.json())
+            .then((responseJson) => {
+              if (responseJson.status == true) {
+                ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+                initSurficialMarkers();
+                resetState();
+              } else {
+                ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            }
+          );
+
+
+        } }
       ]
     )
   }
