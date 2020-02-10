@@ -40,7 +40,7 @@ const InputStyle = StyleSheet.create({
     white: {
         color: '#fff',
     },
-    back: {
+    black: {
         color: '#000'
     }
 })
