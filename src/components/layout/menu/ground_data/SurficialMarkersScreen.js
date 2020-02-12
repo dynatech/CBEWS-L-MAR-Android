@@ -98,8 +98,6 @@ function SurficialMarkersScreen() {
   }
 
   const addNewMarker = (marker) => {
-    console.log(markers.length)
-    console.log(markers)
     if (markers.length == 0){
       let temp = markers;
       temp.push(marker);
@@ -117,7 +115,6 @@ function SurficialMarkersScreen() {
     let temp_marker_field = [];
     markers_data.forEach((element) => {
       let marker = element[1];
-      // addNewMarker(marker)
       temp_marker_field.push(
         <View style={ContainerStyle.input_label_combo}>
           <Text style={LabelStyle.medium_label}>Marker: {marker}</Text>
@@ -311,8 +308,6 @@ function SurficialMarkersScreen() {
               console.log(error);
             }
           );
-
-
         } }
       ]
     )

@@ -7,16 +7,20 @@ import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
 import { DataTable } from 'react-native-paper';
-import SmsToggle from '../../../../reducers/SmsToggle'
+import AppConfig from '../../../../reducers/AppConfig';
 
 function MoMsScreen() {
 
   const [datetime, setDatetime] = useState(moment().format('YYYY-MM-DD HH:mm:ss'))
-  const [featureType, setFeatureType] = useState("scarp");
+  const [featureType, setFeatureType] = useState(9);
+  const [featureList, setFeatureList] = useState([]);
   const [reporter, setReporter] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+  const [featureName, setFeatureName] = useState("");
   const [isModify, setModify] = useState(false);
-
+  const [isNew, setNew] = useState(true);
+  const [dtRow, setDtRow] = useState([]);
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(0);
 
@@ -25,6 +29,32 @@ function MoMsScreen() {
   }, [])
 
   const initializeMoMs = () => {
+    fetch(`${AppConfig.HOSTNAME}/api/ground_data/moms/fetch/29`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.status == true) {
+          if (responseJson.data.length != 0) {
+
+          } else {
+            setDtRow([<View>
+              <Text>No data available</Text>
+              </View>])
+          }
+        } else {
+          console.log("go here")
+          ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      }
+      );
+
 
     // temp_row.push(
     //   <DataTable.Row onPress={() => {
@@ -37,12 +67,11 @@ function MoMsScreen() {
     //     <DataTable.Cell style={{ width: 150 }}>{attachments}</DataTable.Cell>
     //   </DataTable.Row>
     // )
-    resetState()
   }
 
   const resetState = () => {
     setDatetime(moment().format('YYYY-MM-DD HH:mm:ss'))
-    setFeatureType([])
+    setFeatureType(1)
     setReporter("")
     setDescription("")
     setModify(false)
@@ -75,6 +104,35 @@ function MoMsScreen() {
   }
 
   const addMoMs = () => {
+    fetch(`${AppConfig.HOSTNAME}/api/ground_data/moms/add`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "datetime": datetime,
+        "feature_type": featureType,
+        "feature_name": featureName,
+        "reporter": reporter,
+        "description": description,
+        "site_id": 29
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(responseJson)
+        // if (responseJson.status == true) {
+        //   ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+        // } else {
+        //   ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+        // }
+      })
+      .catch((error) => {
+        console.log(error);
+      }
+    );
+
+    // 
     // let { datetime, feature_type, reporter, description,
     //   attachments } = this.state;
     // let temp_row = []
@@ -128,6 +186,30 @@ function MoMsScreen() {
     )
   }
 
+  const onChangeFeatureType = (feature_type) => {
+    setFeatureType(feature_type);
+    fetch(`${AppConfig.HOSTNAME}/api/ground_data/moms/fetch/feature/${feature_type}/29`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+        // if (responseJson.status == true) {
+
+        // } else {
+        //   ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+        // }
+      })
+      .catch((error) => {
+        console.log(error)
+      }
+      );
+    
+  }
+
   return (
     <ScrollView>
       <View style={ContainerStyle.content}>
@@ -141,9 +223,9 @@ function MoMsScreen() {
                 <DataTable.Title style={{ width: 150 }}>Description</DataTable.Title>
                 <DataTable.Title style={{ width: 150 }}>Attachments</DataTable.Title>
               </DataTable.Header>
-              {
-                // Datatable row
-              }
+              <View>
+                <Text style={[LabelStyle.large_label, LabelStyle.brand]}>NO DATA AVAILABLE | NO DATA AVAILABLE | NO DATA AVAILABLE | NO DATA AVAILABLE</Text>
+              </View>
             </DataTable>
           </ScrollView>
           <DataTable.Pagination
@@ -180,55 +262,87 @@ function MoMsScreen() {
               <Picker
                 selectedValue={featureType}
                 onValueChange={(itemValue, itemIndex) => {
-                    setFeatureType(itemValue)
+                    onChangeFeatureType(itemValue);
                   }
                 }>
-                <Picker.Item label="Scarp" value="scarp" />
-                <Picker.Item label="Bitak/Crack" value="crack" />
-                <Picker.Item label="Seepage" value="seepage" />
-                <Picker.Item label="Ponding" value="ponding" />
-                <Picker.Item label="Tilted/Split Trees" value="tilted" />
-                <Picker.Item label="Damaged Structures" value="damaged_structures" />
-                <Picker.Item label="Slop Failure" value="slope_failures" />
-                <Picker.Item label="Bulging/Depression" value="bulging" />
+                <Picker.Item label="Scarp" value="2" />
+                <Picker.Item label="Bitak/Crack" value="1" />
+                <Picker.Item label="Seepage" value="3" />
+                <Picker.Item label="Ponding" value="4" />
+                <Picker.Item label="Tilted/Split Trees" value="5" />
+                <Picker.Item label="Damaged Structures" value="6" />
+                <Picker.Item label="Slop Failure" value="7" />
+                <Picker.Item label="Bulging/Depression" value="8" />
+                <Picker.Item label="No new manifestation observed" value="9" />
               </Picker>
             </View>
           </View>
+          {
+            isNew ? <View style={ContainerStyle.input_label_combo}>
+            <Text style={LabelStyle.medium_label}>Feature name</Text>
+            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setFeatureName(text)}></TextInput>
+          </View> :
+          <View style={ContainerStyle.input_label_combo}>
+            <Text style={LabelStyle.medium_label}>Feature Type</Text>
+            <View style={[InputStyle.medium, InputStyle.default, InputStyle.black]}>
+              <Picker
+                selectedValue={featureType}
+                onValueChange={(itemValue, itemIndex) => {
+                    onChangeFeatureType(itemValue);
+                  }
+                }>
+                <Picker.Item label="Scarp" value="2" />
+                <Picker.Item label="Bitak/Crack" value="1" />
+                <Picker.Item label="Seepage" value="3" />
+                <Picker.Item label="Ponding" value="4" />
+                <Picker.Item label="Tilted/Split Trees" value="5" />
+                <Picker.Item label="Damaged Structures" value="6" />
+                <Picker.Item label="Slop Failure" value="7" />
+                <Picker.Item label="Bulging/Depression" value="8" />
+                <Picker.Item label="No new manifestation observed" value="9" />
+              </Picker>
+            </View>
+          </View>
+          }
+          <View style={ContainerStyle.input_label_combo}>
+            <Text style={LabelStyle.medium_label}>Location</Text>
+            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setLocation(text)}></TextInput>
+          </View>
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Reporter</Text>
-            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => console.log(text)}></TextInput>
+            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setReporter(text)}></TextInput>
           </View>
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Description</Text>
-            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => console.log(text)}></TextInput>
+            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setDescription(text)}></TextInput>
           </View>
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Attachments</Text>
-            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => console.log(text)}></TextInput>
+            <TextInput editable={false} style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => console.log(text)}>Feature will be available soon</TextInput>
           </View>
-          {isModify ? 
+          {isModify ? <View>
+            <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row' }}>
+              <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { updateMoMs() }}>
+                <Text style={ButtonStyle.medium_text}>Update</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { deleteMoMs() }}>
+                <Text style={ButtonStyle.medium_text}>Delete</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { cancelModification() }}>
+                <Text style={ButtonStyle.medium_text}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ paddingTop: '10%', alignItems: 'center' }}>
+              <TouchableOpacity style={ButtonStyle.medium} onPress={() => { sendMoms() }}>
+                <Text style={ButtonStyle.medium_text}>Send MoMs</Text>
+              </TouchableOpacity>
+            </View>
+          </View>:
               <View style={{ paddingTop: '10%', alignItems: 'center' }}>
                 <TouchableOpacity style={ButtonStyle.medium} onPress={() => { addMoMs() }}>
                   <Text style={ButtonStyle.large_text}>Add +</Text>
                 </TouchableOpacity>
-              </View> : <View>
-              <View style={{ paddingTop: '10%', alignItems: 'center', flexDirection: 'row' }}>
-                <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { updateMoMs() }}>
-                  <Text style={ButtonStyle.medium_text}>Update</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { deleteMoMs() }}>
-                  <Text style={ButtonStyle.medium_text}>Delete</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={ButtonStyle.extra_small} onPress={() => { cancelModification() }}>
-                  <Text style={ButtonStyle.medium_text}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ paddingTop: '10%', alignItems: 'center' }}>
-                <TouchableOpacity style={ButtonStyle.medium} onPress={() => { sendMoms() }}>
-                  <Text style={ButtonStyle.medium_text}>Send MoMs</Text>
-                </TouchableOpacity>
-              </View>
-            </View>}
+              </View>}
         </View>
       </View>
     </ScrollView>
