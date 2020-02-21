@@ -29,7 +29,7 @@ const InputStyle = StyleSheet.create({
         elevation: 2
     },
     disabled: {
-
+        backgroundColor: '#9c9c9c'
     },
     success: {
 

@@ -1,25 +1,31 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert, Picker, ToastAndroid } from 'react-native';
-import DatePicker from 'react-native-datepicker';
-import moment from 'moment';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { InputStyle } from '../../../../styles/input_style';
 import { LabelStyle } from '../../../../styles/label_style';
 import { ButtonStyle } from '../../../../styles/button_style';
 import { DataTable } from 'react-native-paper';
 import AppConfig from '../../../../reducers/AppConfig';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
+import Storage from '../../../../reducers/Storage';
 
 function MoMsScreen() {
 
   const [datetime, setDatetime] = useState(moment().format('YYYY-MM-DD HH:mm:ss'))
   const [featureType, setFeatureType] = useState(9);
   const [featureList, setFeatureList] = useState([]);
+  const [moms, setMoms] = useState([]);
+
   const [reporter, setReporter] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [featureName, setFeatureName] = useState("");
+
   const [isModify, setModify] = useState(false);
+  const [isNewFeatureName, setIsNewFN] = useState(true);
   const [isNew, setNew] = useState(true);
+  const [isInputDisabled, setInputDisabled] = useState({});
   const [dtRow, setDtRow] = useState([]);
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(0);
@@ -28,7 +34,7 @@ function MoMsScreen() {
     initializeMoMs();
   }, [])
 
-  const initializeMoMs = () => {
+  const initializeMoMs = (dt_row = 0) => {
     fetch(`${AppConfig.HOSTNAME}/api/ground_data/moms/fetch/29`, {
       method: 'GET',
       headers: {
@@ -37,36 +43,52 @@ function MoMsScreen() {
       }
     }).then((response) => response.json())
       .then((responseJson) => {
+        let moms_container = [];
+        let temp_pages = parseInt(responseJson.data.length / 10)
         if (responseJson.status == true) {
           if (responseJson.data.length != 0) {
-
+            responseJson.data.forEach(element => {
+              const [feature_id, instance_id, site_id, feature_name, 
+                  location, reporter, moms_id, observace_ts, reporter_id,
+                  remarks, validator, op_trigger, feature_type, feature_desc] = element
+              let temp = {
+                "instance_id":instance_id,
+                "site_id":site_id,
+                "feature_id":feature_id,
+                "feature_name":feature_name,
+                "location":location,
+                "reporter":reporter,
+                "moms_id":moms_id,
+                "observace_ts":moment(observace_ts).format('YYYY-MM-DD HH:mm:ss'),
+                "reporter_id":reporter_id,
+                "remarks":remarks,
+                "validator":validator,
+                "op_trigger":op_trigger,
+                "feature_type": feature_type,
+                "feature_desc": feature_desc
+              }
+              moms_container.push(temp)
+            });
+            
+            if ((responseJson.data.length % 10) != 0) {
+              temp_pages = temp_pages+1;
+            }
+            setPages(temp_pages);
+            setMoms(moms_container)
+            constructDtBody(moms_container, dt_row)
           } else {
-            setDtRow([<View>
-              <Text>No data available</Text>
-              </View>])
+            setDtRow(<View>
+              <Text style={[LabelStyle.large_label, LabelStyle.brand]}>NO DATA AVAILABLE | NO DATA AVAILABLE | NO DATA AVAILABLE | NO DATA AVAILABLE</Text>
+            </View>)
           }
         } else {
-          console.log("go here")
           ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
         }
       })
       .catch((error) => {
         console.log(error)
       }
-      );
-
-
-    // temp_row.push(
-    //   <DataTable.Row onPress={() => {
-    //     this.selectCell(temp_data)
-    //   }} onLongPress={() => { this.validateMoMs(temp_data) }}>
-    //     <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 150 }}>{feature_type}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 200 }}>{reporter}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 150 }}>{description}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 150 }}>{attachments}</DataTable.Cell>
-    //   </DataTable.Row>
-    // )
+    );
   }
 
   const resetState = () => {
@@ -74,21 +96,43 @@ function MoMsScreen() {
     setFeatureType(1)
     setReporter("")
     setDescription("")
+    setLocation("")
     setModify(false)
   }
 
   const selectCell = (data) => {
-    let { datetime, feature_type, reporter, description,
-      attachments } = data;
+    console.log(data)
+  }
 
-    this.setState({
-      feature_type: feature_type,
-      reporter: reporter,
-      description: description,
-      attachments: attachments,
-      datetime: datetime
+  const onPageChange = (raw_page) => {
+    setPage(raw_page);
+    constructDtBody(moms, raw_page * 10);
+  }
+
+  const constructDtBody = (moms, page) => {
+    console.log(moms)
+    console.log(page)
+
+    let moms_dt = [];
+    let key_counter = 0;
+    moms.forEach(element => {
+      console.log(element)
+      // moms_dt.push(
+      //   <DataTable.Row onPress={() => {
+      //     selectCell(temp)
+      //   }}>
+      //     <DataTable.Cell key={key_counter+observace_ts} style={{ width: 150 }}>{moment(observace_ts).format('YYYY-MM-DD HH:mm:ss')}</DataTable.Cell>
+      //     <DataTable.Cell key={key_counter+feature_type} style={{ width: 150 }}>{feature_type}</DataTable.Cell>
+      //     <DataTable.Cell key={key_counter+feature_name} style={{ width: 150 }}>{feature_name}</DataTable.Cell>
+      //     <DataTable.Cell key={key_counter+reporter} style={{ width: 150 }}>{reporter}</DataTable.Cell>
+      //     <DataTable.Cell key={key_counter+remarks} style={{ width: 150 }}>{remarks}</DataTable.Cell>
+      //   </DataTable.Row>
+      //   )
+      // key_counter++;
+      // setDtRow(moms_dt)
     });
-    this.modifyVisible();
+    
+
   }
 
   const validateMoMs = (data) => {
@@ -104,53 +148,38 @@ function MoMsScreen() {
   }
 
   const addMoMs = () => {
-    fetch(`${AppConfig.HOSTNAME}/api/ground_data/moms/add`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "datetime": datetime,
-        "feature_type": featureType,
-        "feature_name": featureName,
-        "reporter": reporter,
-        "description": description,
-        "site_id": 29
-      }),
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        // console.log(responseJson)
-        // if (responseJson.status == true) {
-        //   ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
-        // } else {
-        //   ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
-        // }
-      })
-      .catch((error) => {
-        console.log(error);
-      }
-    );
-
-    // 
-    // let { datetime, feature_type, reporter, description,
-    //   attachments } = this.state;
-    // let temp_row = []
-    // let temp_data = this.state
-    // temp_row.push(this.state.datatable_row)
-    // temp_row.push(
-    //   <DataTable.Row onPress={() => {
-    //     this.selectCell(temp_data)
-    //   }} onLongPress={() => { this.validateMoMs(temp_data) }}>
-    //     <DataTable.Cell style={{ width: 150 }}>{datetime}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 150 }}>{feature_type}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 200 }}>{reporter}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 150 }}>{description}</DataTable.Cell>
-    //     <DataTable.Cell style={{ width: 150 }}>{attachments}</DataTable.Cell>
-    //   </DataTable.Row>
-    // )
-    // this.setState({ datatable_row: temp_row })
-    // ToastAndroid.show("Successfully added new Manifestation!", ToastAndroid.LONG)
+    Storage.getItem('UserCredentials').then(config => {
+      fetch(`${AppConfig.HOSTNAME}/api/ground_data/moms/add`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "datetime": datetime,
+          "feature_type": featureType,
+          "feature_name": featureName,
+          "reporter": reporter,
+          "location": location,
+          "description": description,
+          "site_id": 29,
+          "user_id": config.user_id
+        }),
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status == true) {
+            ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+            initializeMoMs();
+          } else {
+            ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
+          }
+          resetState();
+        })
+        .catch((error) => {
+          console.log(error);
+        }
+      );
+    });
   }
 
   const cancelModification = () => {
@@ -196,18 +225,41 @@ function MoMsScreen() {
       }
     }).then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
-        // if (responseJson.status == true) {
-
-        // } else {
-        //   ToastAndroid.show(responseJson.message, ToastAndroid.LONG);
-        // }
+        if (responseJson.data.length != 0) {
+          setNew(false);
+          setFeatureList(responseJson.data);
+          // Set initial value for MoMs fields
+          let initVal = responseJson.data[0];
+          setLocation(initVal.location);
+          setReporter(initVal.reporter);
+          setIsNewFN(false);
+          setInputDisabled(InputStyle.disabled)
+        } else {
+          setInputDisabled({})
+          setIsNewFN(true);
+          setNew(true);
+        }
       })
       .catch((error) => {
         console.log(error)
       }
-      );
-    
+    );
+  }
+
+  const onChangeFeaturename = (instance_id) => {
+    if (instance_id != 'new_moms') {
+      setFeatureName(instance_id);
+      featureList.forEach(element => {
+        if (instance_id == element.instance_id) {
+          setLocation(element.reporter);
+          setReporter(element.location);
+        }
+      });
+    } else {
+      setInputDisabled({})
+      setNew(true);
+      setIsNewFN(true);
+    }
   }
 
   return (
@@ -219,20 +271,18 @@ function MoMsScreen() {
               <DataTable.Header>
                 <DataTable.Title style={{ width: 150 }}>Date and Time</DataTable.Title>
                 <DataTable.Title style={{ width: 150 }}>Feature Type</DataTable.Title>
-                <DataTable.Title style={{ width: 200 }}>Reporter</DataTable.Title>
+                <DataTable.Title style={{ width: 150 }}>Feature Name</DataTable.Title>
+                <DataTable.Title style={{ width: 150 }}>Reporter</DataTable.Title>
                 <DataTable.Title style={{ width: 150 }}>Description</DataTable.Title>
-                <DataTable.Title style={{ width: 150 }}>Attachments</DataTable.Title>
               </DataTable.Header>
-              <View>
-                <Text style={[LabelStyle.large_label, LabelStyle.brand]}>NO DATA AVAILABLE | NO DATA AVAILABLE | NO DATA AVAILABLE | NO DATA AVAILABLE</Text>
-              </View>
+              {dtRow}
             </DataTable>
           </ScrollView>
           <DataTable.Pagination
-            page={1}
-            numberOfPages={3}
-            onPageChange={(page) => { console.log(page); }}
-            label="1-2 of 6"
+            page={page}
+            numberOfPages={pages}
+            onPageChange={(page) => { onPageChange(page); }}
+            label={`Page ${page} of ${pages-1}`}
           />
         </View>
         <View>
@@ -265,6 +315,7 @@ function MoMsScreen() {
                     onChangeFeatureType(itemValue);
                   }
                 }>
+                <Picker.Item label="---------" value="0" />
                 <Picker.Item label="Scarp" value="2" />
                 <Picker.Item label="Bitak/Crack" value="1" />
                 <Picker.Item label="Seepage" value="3" />
@@ -286,35 +337,32 @@ function MoMsScreen() {
             <Text style={LabelStyle.medium_label}>Feature Type</Text>
             <View style={[InputStyle.medium, InputStyle.default, InputStyle.black]}>
               <Picker
-                selectedValue={featureType}
+                selectedValue={featureName}
                 onValueChange={(itemValue, itemIndex) => {
-                    onChangeFeatureType(itemValue);
+                    onChangeFeaturename(itemValue);
                   }
                 }>
-                <Picker.Item label="Scarp" value="2" />
-                <Picker.Item label="Bitak/Crack" value="1" />
-                <Picker.Item label="Seepage" value="3" />
-                <Picker.Item label="Ponding" value="4" />
-                <Picker.Item label="Tilted/Split Trees" value="5" />
-                <Picker.Item label="Damaged Structures" value="6" />
-                <Picker.Item label="Slop Failure" value="7" />
-                <Picker.Item label="Bulging/Depression" value="8" />
-                <Picker.Item label="No new manifestation observed" value="9" />
+                {
+                  featureList.map((l) => (
+                    <Picker.Item label={l.feature_name} value={l.instance_id} />
+                  ))
+                }
+                <Picker.Item label="New MoMs" value="new_moms" />
               </Picker>
             </View>
           </View>
           }
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Location</Text>
-            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setLocation(text)}></TextInput>
+            <TextInput editable={isNewFeatureName} style={[isInputDisabled,InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setLocation(text)}></TextInput>
           </View>
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Reporter</Text>
-            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setReporter(text)}></TextInput>
+            <TextInput editable={isNewFeatureName} style={[isInputDisabled,InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setReporter(text)}></TextInput>
           </View>
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Description</Text>
-            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} onChangeText={text => setDescription(text)}></TextInput>
+            <TextInput style={[InputStyle.medium, InputStyle.default, InputStyle.black]} value={description} onChangeText={text => setDescription(text)}></TextInput>
           </View>
           <View style={ContainerStyle.input_label_combo}>
             <Text style={LabelStyle.medium_label}>Attachments</Text>
