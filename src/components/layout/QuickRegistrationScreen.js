@@ -54,7 +54,6 @@ function QuickRegistrationScreen(props) {
       ToastAndroid.show(err, ToastAndroid.LONG);
     } else {
 
-      AppConfig.cnf().then(config => {
         fetch('http://192.168.150.251:5000/api/accounts/signup', {
           method: 'POST',
           headers: {
@@ -65,8 +64,8 @@ function QuickRegistrationScreen(props) {
             "username": username,
             "password": password,
             "mobile_number": mobile_number,
-            "site_id": config.site_id,
-            "site_code": config.site_code
+            "site_id": AppConfig.CONFIG.site_id,
+            "site_code": AppConfig.CONFIG.site_code
           }),
         }).then((response) => response.json())
           .then((responseJson) => {
@@ -81,7 +80,6 @@ function QuickRegistrationScreen(props) {
             console.error(error);
           }
         );
-       });
     }
   }
 
