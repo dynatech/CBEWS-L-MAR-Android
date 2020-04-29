@@ -4,8 +4,8 @@ const AppConfig = {
             site_code: 'mar',
             season: 2
         },
-    HOSTNAME: 'http://192.168.150.251:5000',
-    HOST_DIR: 'http://192.168.150.251/',
+    HOSTNAME: 'http://192.168.254.172:5000',
+    HOST_DIR: 'http://192.168.254.172/',
     UMINGAN_DIR: '/var/www/html/CBEWSL/UMINGAN',
     MARIRONG_DIR: '/var/www/html/CBEWSL/MARIRONG'
 };

@@ -4,12 +4,14 @@ import { ContainerStyle } from '../../styles/container_style';
 import { InputStyle } from '../../styles/input_style';
 import { ButtonStyle } from '../../styles/button_style';
 import AppConfig from '../../reducers/AppConfig';
+import SpinnerLoader from '../../reducers/Spinner';
 
 function QuickRegistrationScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [mobile_number, setMobileNumber] = useState("");
+  const [openLoader , setOpenLoader] = useState(false);
 
   const usernameChange = (text) => {
     setUsername(text);
@@ -28,6 +30,7 @@ function QuickRegistrationScreen(props) {
   }
 
   const confirmCredentials = () => {
+    setOpenLoader(true);
     let confirm_status = true;
     let confirm_message = []
 
@@ -54,7 +57,7 @@ function QuickRegistrationScreen(props) {
       ToastAndroid.show(err, ToastAndroid.LONG);
     } else {
 
-        fetch('http://192.168.150.251:5000/api/accounts/signup', {
+        fetch(`${AppConfig.HOSTNAME}/api/accounts/signup`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -72,8 +75,11 @@ function QuickRegistrationScreen(props) {
             if (responseJson.status == false) {
               ToastAndroid.show("Registration failed, please contact administrator for further assistance.", ToastAndroid.LONG);
             } else {
-              ToastAndroid.show("Registration complete, please wait for the confirmation.", ToastAndroid.LONG);
-              props.navigation.navigate("Login")
+              setOpenLoader(false);
+              setTimeout(()=> {
+                ToastAndroid.show("Registration complete, please wait for the confirmation.", ToastAndroid.LONG);
+                props.navigation.navigate("Login")
+              }, 3000)
             }
           })
           .catch((error) => {
@@ -100,6 +106,7 @@ function QuickRegistrationScreen(props) {
           </View>
         </View>
       </ScrollView>
+      <SpinnerLoader display={openLoader} />
     </Fragment>
   );
 }

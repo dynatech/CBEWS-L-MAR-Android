@@ -29,6 +29,7 @@ function LoginScreen(props) {
   }
 
   const validateCredentials = () => {
+    console.log(`${AppConfig.HOSTNAME}/api/accounts/signin`)
     if (username == "" || password == "") {
       ToastAndroid.show("Login failed, invalid username or password.", ToastAndroid.SHORT);
     } else {
