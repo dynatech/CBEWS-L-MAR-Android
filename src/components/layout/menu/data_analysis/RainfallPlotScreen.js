@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableHighlight, Modal } from 'react-native';
-import { ImageStyle } from '../../../../styles/image_style'
+import { View, Text, ScrollView } from 'react-native';
 import { ContainerStyle } from '../../../../styles/container_style'
 import { LabelStyle } from '../../../../styles/label_style';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import AppConfig from '../../../../reducers/AppConfig';
 import SpinnerLoader from '../../../../reducers/Spinner';
-import HighchartsReactNative from '@highcharts/highcharts-react-native'
+
+import HighchartsReactNative from '@highcharts/highcharts-react-native';
 import moment from 'moment';
 
 function RainfallPlotScreen() {
   const [rainfallData, setRainfallData] = useState();
   const [openSpinner, setOpenSpinner] = useState(true);
-  const [options, setOptions] = useState([]);
+  const [latestTs, setLatestTS] = useState(moment(new Date).format("LLLL"));
+  const [display, setDisplay] = useState(false);
+  const [graphContainer, setGraphContainer] = useState([]);
 
   useEffect(() => {
     initRainfallPlot();
@@ -28,8 +29,6 @@ function RainfallPlotScreen() {
     }).then((response) => response.json())
         .then((responseJson) => {
             let rainfall_data = responseJson[0];
-            console.log(rainfall_data);
-            setOpenSpinner(false);
             setRainfallData(rainfall_data)
             prepRainPlot(rainfall_data.plot, rainfall_data.ts_start, rainfall_data.ts_end)
         })
@@ -45,8 +44,26 @@ function RainfallPlotScreen() {
         const data = prepareRainfallData(set, ts_start, ts_end);
         processed_data.push(data);
     });
-    setOptions(renderGraph(processed_data, ts_start, ts_end))
-    setLoadGraph(true);
+    let temp = renderGraph(processed_data, ts_start, ts_end);
+    let temp_container = [];
+    temp.map((option, i) => {
+      temp_container.push(
+        <View key={i} style={{padding: 10}}>
+          <HighchartsReactNative
+            styles={{
+              backgroundColor: '#fff',
+              justifyContent: 'center',
+              height: 350,
+              width: '100%'
+            }}
+            options={option.cumulative}
+          />
+        </View>
+      )
+    });
+    setGraphContainer(temp_container);
+    setDisplay(true)
+    setOpenSpinner(false);
   }
 
   const renderGraph = (processed_data, start, end) => {
@@ -60,18 +77,19 @@ function RainfallPlotScreen() {
   }
 
   return (
-    <View style={ContainerStyle.content}>
-      <Text style={[LabelStyle.large_label, LabelStyle.branding]}>Rainfall data as of August 16, 2019 04:00 PM</Text>
-      <HighchartsReactNative
-          styles={{
-            backgroundColor: '#fff',
-            justifyContent: 'center'
-        }}
-          options={options}
-      />
-      <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Pinch graph to zoom in/out.</Text>
-      <SpinnerLoader display={openSpinner} />
-    </View>
+    <ScrollView>
+      <View style={ContainerStyle.content}>
+        <Text style={[LabelStyle.large_label, LabelStyle.branding]}>Rainfall data as of {latestTs}</Text>
+        { display ? 
+            graphContainer
+          :
+          <View>
+          </View>
+        }
+        <Text style={[LabelStyle.small_label, LabelStyle.brand]}>* Pinch graph to zoom in/out.</Text>
+        <SpinnerLoader display={openSpinner} />
+      </View>
+    </ScrollView>
   );
 }
 
