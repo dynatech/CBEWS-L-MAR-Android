@@ -19,7 +19,7 @@
     "native-base": "^2.13.4",
     "react": "^16.13.1",
     "react-base": "^0.2.0",
-    "react-native": "0.61.0",
+    "react-native": "0.62.3",
     "react-native-calendars": "^1.205.0",
     "react-native-cert-pinner": "^0.4.1",
     "react-native-datepicker": "^1.7.2",
